@@ -1,46 +1,39 @@
 <template>
   <div style="width:100vw">
-    hi <el-button>Default</el-button>
-    <D3ModuleContainer
-      :module="ChartColumnBar"
-      :dataset="dataset"
-    />
+    <div class="container">
+      <el-button>投票統計類別摘要區塊</el-button>
+      <ChartRow class="child" />
+      <ChartRow class="child" />
+      <ChartColumn class="child" />
+    </div>
+    <div class="container">
+      <el-button>候選人區域比較區塊</el-button>
+      <ChartColumnTwoScalesBarGroupAndLine class="child"/>
+      <ChartColumnTwoScalesBarGroupAndLine class="child"/>
+      <ChartColumnTwoScalesBarGroupAndLine class="child"/>
+    </div>
+    <div class="container">
+      <el-button>候選人各單區得票顯示區塊</el-button>
+      <ChartArcPie class="child" />
+      <ChartArcPie class="child" />
+      <ChartArcPie class="child" />
+    </div>
   </div>
 </template>
 
 <script setup>
-import D3ModuleContainer from '@bpchart/vue/components/D3ModuleContainer.vue'
-import { ChartColumnBar } from '@bpchart/d3-modules/chartColumn'
+import ChartArcPie from '@/components/ChartArcPie.vue'
+import ChartColumnTwoScalesBarGroupAndLine from '@/components/ChartColumnTwoScalesBarGroupAndLine.vue'
+import ChartRow from '@/components/ChartRow.vue'
+import ChartColumn from '@/components/ChartColumn.vue'
 
-const dataset = {
-  "data": [
-    {
-      "value": 55
-    },
-    {
-      "value": 150
-    },
-    {
-      "value": 45
-    },
-    {
-      "value": 2
-    },
-    {
-      "value": 3
-    },
-    {
-      "value": 30
-    }
-  ],
-  "xLabels": [
-    "心",
-    "讚",
-    "哈",
-    "怒",
-    "嗚",
-    "哇"
-  ],
-  "itemLabels": []
-}
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+}
+.child {
+  flex: 1
+}
+</style>
