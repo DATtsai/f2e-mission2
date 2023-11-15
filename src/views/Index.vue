@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:100vw">
     hi <el-button>Default</el-button>
     <D3ModuleContainer
       :module="ChartColumnBar"
