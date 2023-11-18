@@ -1,5 +1,9 @@
 <template>
   <div style="width:100vw">
+    <div>
+      <el-button>候選人各單區得票顯示區塊</el-button>
+      <ChartRowBarLayout />
+    </div>
     <div class="container">
       <el-button>投票統計類別摘要區塊</el-button>
       <ChartRow class="child" />
@@ -26,6 +30,7 @@ import ChartArcPie from '@/components/ChartArcPie.vue'
 import ChartColumnTwoScalesBarGroupAndLine from '@/components/ChartColumnTwoScalesBarGroupAndLine.vue'
 import ChartRow from '@/components/ChartRow.vue'
 import ChartColumn from '@/components/ChartColumn.vue'
+import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 
 </script>
 
