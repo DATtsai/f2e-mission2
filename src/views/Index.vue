@@ -2,7 +2,7 @@
   <div style="width:100vw">
     <div>
       <el-button>投票統計類別摘要區塊</el-button>
-      <ChartBubbleGroup />
+      <ChartBubbleGroup :groupMode="'type'" />
     </div>
     <div>
       <el-button>候選人區域比較區塊</el-button>
