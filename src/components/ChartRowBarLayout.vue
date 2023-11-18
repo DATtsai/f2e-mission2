@@ -83,8 +83,8 @@ const params = {
     "barPadding": 5,
     "barGroupPadding": 30,
     "labelTextMethod": (e,t)=>String(e.value),
-    "labelPositionMethod": (e,t)=>"center",
-    "labelStyleMethod": (e,t)=>"",
+    "labelPositionMethod": (e,a)=>5===a[0]?"right":"center",
+    "labelStyleMethod": (e,a)=>5===a[0]?"font-weight:800;font-size:18px;fill:#709EE2":"",
     "labelFontSizeMethod": (e,t)=>10,
     "labelColorMethod": (e,t)=>'#ffffff',
     "labelPadding": 5
