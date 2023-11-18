@@ -10,7 +10,8 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "deploy": "npm run build-only && gh-pages -d dist"
+    "deploy": "npm run build-only && gh-pages -d dist",
+    "deploy-only": "gh-pages -d dist"
   },
   "dependencies": {
     "@bpchart/d3-modules": "^2.13.1",
