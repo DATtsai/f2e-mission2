@@ -2,7 +2,7 @@
   <div>
     <D3ModuleContainer
       :module="ChartBubbleGroup"
-      :dataset="dataset"
+      :data="data"
       :params="params"
     />
   </div>
@@ -11,7 +11,7 @@
 import D3ModuleContainer from '@bpchart/vue/components/D3ModuleContainer.vue'
 import { ChartBubbleGroup } from '@bpchart/d3-modules/chartBubbleGroup'
 
-// const dataset = [
+// const data = [
 //   { id: '台北市_選舉人數', label: '台北市', value: 2167264, type: '選舉人數'},
 //   { id: '新竹市_選舉人數', label: '新竹市', value: 345345, type: '選舉人數'},
 //   { id: '台南市_選舉人數', label: '台南市', value: 1556845, type: '選舉人數'},
@@ -34,7 +34,7 @@ import { ChartBubbleGroup } from '@bpchart/d3-modules/chartBubbleGroup'
 //   { id: '高雄市_未投票數', label: '高雄市', value: 12, type: '未投票數'},
 // ]
 
-const dataset = [
+const data = [
   {
     "id": "疫情",
     "label": "疫情",
