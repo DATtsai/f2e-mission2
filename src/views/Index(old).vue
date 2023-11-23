@@ -1,6 +1,10 @@
 <template>
   <div style="width: 100vh;">
     <div>
+      <el-button>地圖</el-button>
+      <MapCounty />
+    </div>
+    <div>
       <el-button>投票統計類別摘要區塊</el-button>
       <ChartBubbleGroup :groupMode="'type'" />
     </div>
@@ -40,6 +44,7 @@ import ChartRow from '@/components/ChartRow.vue'
 import ChartColumn from '@/components/ChartColumn.vue'
 import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
+import MapCounty from '@/components/MapCounty.vue'
 
 </script>
 
