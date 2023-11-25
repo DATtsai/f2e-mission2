@@ -17,25 +17,32 @@
     </div>
     <div class="chart">
       <div class="filter">
-        <el-select v-model="value" clearable placeholder="Select">
+        <el-select v-model="cityValue" multiple collapse-tags clearable placeholder="縣市（可複選）">
+          <div style="padding: 0 20px;line-height: 34px;">
+            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAll">全選</el-checkbox>
+          </div>
+          <el-checkbox-group v-model="cityValue">
+            <el-option
+              v-for="item in city"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+              <el-checkbox style="pointer-events:none" :label="item.label"></el-checkbox>
+            </el-option>  
+          </el-checkbox-group>
+        </el-select>
+        <el-select v-model="distValue" multiple collapse-tags clearable placeholder="鄉鎮市區（可複選）" >
           <el-option
-            v-for="item in options"
+            v-for="item in dist"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="value" clearable placeholder="Select">
+        <el-select v-model="candidateValue" multiple collapse-tags clearable placeholder="候選人（可複選）">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-select v-model="value" clearable placeholder="Select">
-          <el-option
-            v-for="item in options"
+            v-for="item in candidate"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -81,28 +88,57 @@ import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
 import { ref } from 'vue'
 
-const value = ref('')
-const options = [
+const checkAll = ref(false)
+const isIndeterminate = ref(true)
+const cityValue = ref([])
+const distValue = ref([])
+const candidateValue = ref([])
+const city = [
   {
-    value: 'Option1',
-    label: 'Option1',
+    value: '01',
+    label: '台北市',
   },
   {
-    value: 'Option2',
-    label: 'Option2',
+    value: '02',
+    label: '新北市',
   },
   {
-    value: 'Option3',
-    label: 'Option3',
+    value: '03',
+    label: '桃園市',
   },
   {
-    value: 'Option4',
-    label: 'Option4',
+    value: '04',
+    label: '新竹市',
   },
   {
-    value: 'Option5',
-    label: 'Option5',
+    value: '05',
+    label: '高雄市',
   },
 ]
 
+const dist = [
+  {
+    value: '001',
+    label: '信義區'
+  }
+]
+
+const candidate = [
+  {
+    value: '1',
+    label: '蔡英文'
+  },
+  {
+    value: '2',
+    label: '韓國瑜'
+  },
+  {
+    value: '3',
+    label: '宋楚瑜'
+  }
+]
+
+const handleCheckAll = () => { 
+  console.log('dd');
+}
 </script>
