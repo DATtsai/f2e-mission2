@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="chart" id="chart" v-if="isClick">
-      <div class="filter">
+      <div class="filter" id="filterBar">
         <el-select v-model="cityValue" multiple collapse-tags clearable placeholder="縣市（可複選）">
           <el-option
             v-for="item in city"
@@ -157,6 +157,9 @@ const candidate = [
   }
 ]
 
+const filterBar = ref();
+const position = ref();
+
 const clicktoShow = async () => { 
   isClick.value = true;
   await nextTick();
@@ -164,5 +167,18 @@ const clicktoShow = async () => {
     top: document.getElementById('chart').offsetTop,
     behavior: "smooth",
   });
+  filterBar.value = document.getElementById('filterBar');
+  position.value = filterBar.value.offsetTop;
+  
+  window.onscroll = function () { setSticky() };
+}
+
+
+const setSticky = () => { 
+  if (window.pageYOffset >= position.value) {
+    filterBar.value.classList.add('sticky')
+  } else { 
+    filterBar.value.classList.remove('sticky')
+  }
 }
 </script>
