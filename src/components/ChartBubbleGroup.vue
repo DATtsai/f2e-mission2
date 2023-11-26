@@ -2,8 +2,8 @@
   <div>
     <div class="type-btns">
       <el-row>
-        <el-button>預設</el-button>
-        <el-button>分類</el-button>
+        <el-button @click="isChecked('center')" :class="[ btnNow === 'center' ? 'checked':'' ]">預設</el-button>
+        <el-button @click="isChecked('type')" :class="[ btnNow === 'type' ? 'checked':'' ]">分類</el-button>
       </el-row>
     </div>
     <D3ModuleContainer
@@ -91,6 +91,11 @@ const params2 = {
   groupMode: 'type'
 }
 
+const btnNow = ref('center')
+const isChecked = (type) => { 
+  btnNow.value = type
+}
+
 watch(()=>props.groupMode, (val)=>{
   params.value.groupMode = val
 })
@@ -101,14 +106,19 @@ watch(()=>props.groupMode, (val)=>{
   display: flex;
   justify-content: center;
   & .el-button {
-    background-color: transparent;
-    color: #fff;
+    background-color: var(--color-black-soft);
+    border:none;
     margin-left: -1px;
-    border-radius: 0;
   }
   @media (max-width: 768px) {
     margin-top: 1rem;
     justify-content: start;
   }
 }
+
+.checked {
+  background-color: var(--color-background-mute) !important;
+  color: #fff !important;
+}
+
 </style>
