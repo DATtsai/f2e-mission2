@@ -18,19 +18,12 @@
     <div class="chart">
       <div class="filter">
         <el-select v-model="cityValue" multiple collapse-tags clearable placeholder="縣市（可複選）">
-          <div style="padding: 0 20px;line-height: 34px;">
-            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAll">全選</el-checkbox>
-          </div>
-          <el-checkbox-group v-model="cityValue">
-            <el-option
-              v-for="item in city"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-              <el-checkbox style="pointer-events:none" :label="item.label"></el-checkbox>
-            </el-option>  
-          </el-checkbox-group>
+          <el-option
+            v-for="item in city"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
         <el-select v-model="distValue" multiple collapse-tags clearable placeholder="鄉鎮市區（可複選）" >
           <el-option
@@ -88,8 +81,6 @@ import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
 import { ref } from 'vue'
 
-const checkAll = ref(false)
-const isIndeterminate = ref(true)
 const cityValue = ref([])
 const distValue = ref([])
 const candidateValue = ref([])
