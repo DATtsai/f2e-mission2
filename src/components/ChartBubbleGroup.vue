@@ -1,15 +1,21 @@
 <template>
   <div>
+    <div class="type-btns">
+      <el-row>
+        <el-button @click="isChecked('center')" :class="[ btnNow === 'center' ? 'checked':'' ]">預設</el-button>
+        <el-button @click="isChecked('type')" :class="[ btnNow === 'type' ? 'checked':'' ]">分類</el-button>
+      </el-row>
+    </div>
     <D3ModuleContainer
       :module="ChartBubbleGroup"
       :data="dataset"
       :params="params"
     />
-    <D3ModuleContainer
+    <!-- <D3ModuleContainer
       :module="ChartBubbleGroup"
       :data="dataset"
       :params="params2"
-    />
+    /> -->
   </div>
 </template>
 <script setup>
@@ -58,7 +64,12 @@ const params = ref({
     "未投票數",
   ],
   collisionSpacing: 2,
-  groupMode: 'center'
+  groupMode: 'center',
+  tooltipFollowing: {
+    templateHtml: (d) => {
+      return `${d.label}<br/>選舉人數：${d.value}`
+     }
+  }
 })
 
 const params2 = {
@@ -80,7 +91,34 @@ const params2 = {
   groupMode: 'type'
 }
 
+const btnNow = ref('center')
+const isChecked = (type) => { 
+  btnNow.value = type
+}
+
 watch(()=>props.groupMode, (val)=>{
   params.value.groupMode = val
 })
 </script>
+
+<style scoped>
+.type-btns {
+  display: flex;
+  justify-content: center;
+  & .el-button {
+    background-color: var(--color-black-soft);
+    border:none;
+    margin-left: -1px;
+  }
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+    justify-content: start;
+  }
+}
+
+.checked {
+  background-color: var(--color-background-mute) !important;
+  color: #fff !important;
+}
+
+</style>

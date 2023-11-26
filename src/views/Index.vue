@@ -12,12 +12,41 @@
           <h2>投票數：<span>14464571</span></h2>
           <h2>投票率：<span>74.9%</span></h2>
         </div>
-        <button class="button">查看開票結果</button>
+        <button class="button" @click="clicktoShow()">查看開票結果</button>
       </div>
     </div>
-    <div class="chart">
-      <div class="filter">
-        <el-select v-model="value" clearable placeholder="Select">
+    <div class="chart" id="chart" v-if="isClick">
+      <div class="filter" id="filterBar">
+        <el-select v-model="cityValue" multiple collapse-tags clearable placeholder="縣市（可複選）">
+          <el-option
+            v-for="item in city"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <el-select v-model="distValue" multiple collapse-tags clearable placeholder="鄉鎮市區（可複選）" >
+          <el-option
+            v-for="item in dist"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <el-select v-model="candidateValue" multiple collapse-tags clearable placeholder="候選人（可複選）">
+          <el-option
+            v-for="item in candidate"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+
+      <div class="chart-block">
+        <div class="chart-name">圖表名稱</div>
+        <div class="toolbar">
+          <el-select v-model="value" clearable placeholder="Select">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -25,22 +54,20 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="value" clearable placeholder="Select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-select v-model="value" clearable placeholder="Select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+        </div>
+        <div>
+          <ChartBubbleGroup />
+        </div>
+        <div class="legend-group">
+          <div class="legend-bar">
+            <div class="color"></div>
+            <span>選舉人數</span>
+          </div>
+          <div class="legend-line">
+            <div class="color"></div>
+            <span>選舉人數</span>
+          </div>
+        </div>
       </div>
       <div class="chart-block">
         <div class="chart-name">圖表名稱</div>
@@ -79,30 +106,79 @@ import ChartRow from '@/components/ChartRow.vue'
 import ChartColumn from '@/components/ChartColumn.vue'
 import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
-const value = ref('')
-const options = [
+const isClick = ref(false)
+const cityValue = ref([])
+const distValue = ref([])
+const candidateValue = ref([])
+const city = [
   {
-    value: 'Option1',
-    label: 'Option1',
+    value: '01',
+    label: '台北市',
   },
   {
-    value: 'Option2',
-    label: 'Option2',
+    value: '02',
+    label: '新北市',
   },
   {
-    value: 'Option3',
-    label: 'Option3',
+    value: '03',
+    label: '桃園市',
   },
   {
-    value: 'Option4',
-    label: 'Option4',
+    value: '04',
+    label: '新竹市',
   },
   {
-    value: 'Option5',
-    label: 'Option5',
+    value: '05',
+    label: '高雄市',
   },
 ]
 
+const dist = [
+  {
+    value: '001',
+    label: '信義區'
+  }
+]
+
+const candidate = [
+  {
+    value: '1',
+    label: '蔡英文'
+  },
+  {
+    value: '2',
+    label: '韓國瑜'
+  },
+  {
+    value: '3',
+    label: '宋楚瑜'
+  }
+]
+
+const filterBar = ref();
+const position = ref();
+
+const clicktoShow = async () => { 
+  isClick.value = true;
+  await nextTick();
+  window.scrollTo({
+    top: document.getElementById('chart').offsetTop,
+    behavior: "smooth",
+  });
+  filterBar.value = document.getElementById('filterBar');
+  position.value = filterBar.value.offsetTop;
+  
+  window.onscroll = function () { setSticky() };
+}
+
+
+const setSticky = () => { 
+  if (window.pageYOffset >= position.value) {
+    filterBar.value.classList.add('sticky')
+  } else { 
+    filterBar.value.classList.remove('sticky')
+  }
+}
 </script>
