@@ -1,15 +1,21 @@
 <template>
   <div>
+    <div class="type-btns">
+      <el-row>
+        <el-button>預設</el-button>
+        <el-button>分類</el-button>
+      </el-row>
+    </div>
     <D3ModuleContainer
       :module="ChartBubbleGroup"
       :data="dataset"
       :params="params"
     />
-    <D3ModuleContainer
+    <!-- <D3ModuleContainer
       :module="ChartBubbleGroup"
       :data="dataset"
       :params="params2"
-    />
+    /> -->
   </div>
 </template>
 <script setup>
@@ -58,7 +64,12 @@ const params = ref({
     "未投票數",
   ],
   collisionSpacing: 2,
-  groupMode: 'center'
+  groupMode: 'center',
+  tooltipFollowing: {
+    templateHtml: (d) => {
+      return `${d.label}<br/>選舉人數：${d.value}`
+     }
+  }
 })
 
 const params2 = {
@@ -84,3 +95,14 @@ watch(()=>props.groupMode, (val)=>{
   params.value.groupMode = val
 })
 </script>
+
+<style scoped>
+.type-btns {
+  display: flex;
+  justify-content: center;
+  & .el-button {
+    background-color: transparent;
+    color: #fff;
+  }
+}
+</style>
