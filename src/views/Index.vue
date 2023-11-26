@@ -12,10 +12,10 @@
           <h2>投票數：<span>14464571</span></h2>
           <h2>投票率：<span>74.9%</span></h2>
         </div>
-        <button class="button">查看開票結果</button>
+        <button class="button" @click="clicktoShow()">查看開票結果</button>
       </div>
     </div>
-    <div class="chart">
+    <div class="chart" id="chart" v-if="isClick">
       <div class="filter">
         <el-select v-model="cityValue" multiple collapse-tags clearable placeholder="縣市（可複選）">
           <el-option
@@ -79,8 +79,9 @@ import ChartRow from '@/components/ChartRow.vue'
 import ChartColumn from '@/components/ChartColumn.vue'
 import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
+const isClick = ref(false)
 const cityValue = ref([])
 const distValue = ref([])
 const candidateValue = ref([])
@@ -129,7 +130,12 @@ const candidate = [
   }
 ]
 
-const handleCheckAll = () => { 
-  console.log('dd');
+const clicktoShow = async () => { 
+  isClick.value = true;
+  await nextTick();
+  window.scrollTo({
+    top: document.getElementById('chart').offsetTop,
+    behavior: "smooth",
+  });
 }
 </script>
