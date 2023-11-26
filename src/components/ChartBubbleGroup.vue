@@ -103,6 +103,12 @@ watch(()=>props.groupMode, (val)=>{
   & .el-button {
     background-color: transparent;
     color: #fff;
+    margin-left: -1px;
+    border-radius: 0;
+  }
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+    justify-content: start;
   }
 }
 </style>
