@@ -16,6 +16,16 @@ const searchBallot = async (req) => {
             level03 = require('../src/assets/data/level03.json')
             level03 = basic.level03.map(item => level03.find(element => element.id == item)).filter(item => item)
         }
+        // 空陣列預設為全選
+        if(basic.level01 && basic.level01.length === 0) {
+            level01 = require('../src/assets/data/level01.json')
+        }
+        if(basic.level02 && basic.level02.length === 0) {
+            level02 = require('../src/assets/data/level02.json')
+        }
+        if(basic.level03 && basic.level03.length === 0) {
+            level03 = require('../src/assets/data/level03.json')
+        }
     }
     else {
         level01 = require('../src/assets/data/level01.json')
@@ -57,10 +67,5 @@ const searchBallot = async (req) => {
     }
     return result
 };
-
-// (async () => {
-//     let r = await searchBallot({basic:{level02: ['001']}, filter:{candidate: [3]}})
-//     console.log(r)
-// })()
 
 module.exports = { searchBallot }

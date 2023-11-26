@@ -20,6 +20,16 @@ const searchBallot = async (req) => {
             level03 = dataLevel03
             level03 = basic.level03.map(item => level03.find(element => element.id == item)).filter(item => item)
         }
+        // 空陣列預設為全選
+        if(basic.level01 && basic.level01.length === 0) {
+            level01 = dataLevel01
+        }
+        if(basic.level02 && basic.level02.length === 0) {
+            level02 = dataLevel02
+        }
+        if(basic.level03 && basic.level03.length === 0) {
+            level03 = dataLevel03
+        }
     }
     else {
         level01 = dataLevel01
@@ -61,10 +71,5 @@ const searchBallot = async (req) => {
     }
     return result
 };
-
-// (async () => {
-//     let r = await searchBallot({basic:{level02: ['001']}, filter:{candidate: [3]}})
-//     console.log(r)
-// })()
 
 export default searchBallot
