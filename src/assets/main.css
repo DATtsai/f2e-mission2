@@ -42,6 +42,9 @@ a{
       flex-wrap: wrap;
       gap: 0.5rem;
     }
+    @media screen and (width <=768px) {
+      height: auto;
+    }
   }
 }
 
@@ -64,6 +67,7 @@ a{
   padding: 1rem 2rem;
   @media (max-width: 768px) {
     width: 100%;
+    height: auto;
   }
   & .logo {
     margin-bottom: 3rem;
