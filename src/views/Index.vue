@@ -17,7 +17,7 @@
     </div>
     <div class="chart" id="chart" v-if="isClick">
       <div class="filter" id="filterBar">
-        <el-select v-model="cityValue" multiple collapse-tags clearable placeholder="縣市（可複選）">
+        <el-select v-model="cityValue" @change="setCity()" multiple collapse-tags placeholder="縣市（可複選）">
           <el-option
             v-for="item in city"
             :key="item.value"
@@ -25,7 +25,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="distValue" multiple collapse-tags clearable placeholder="鄉鎮市區（可複選）" >
+        <el-select v-model="distValue" multiple collapse-tags placeholder="鄉鎮市區（可複選）" >
           <el-option
             v-for="item in dist"
             :key="item.value"
@@ -33,7 +33,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="candidateValue" multiple collapse-tags clearable placeholder="候選人（可複選）">
+        <el-select v-model="candidateValue" multiple collapse-tags placeholder="候選人（可複選）">
           <el-option
             v-for="item in candidate"
             :key="item.value"
@@ -46,26 +46,34 @@
       <div class="chart-block">
         <div class="chart-name">圖表名稱</div>
         <div class="toolbar">
-          <el-select v-model="value" clearable placeholder="Select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
         </div>
         <div>
-          <ChartBubbleGroup />
+          <ChartBubbleGroup :data-list="bubbleData"/>
         </div>
         <div class="legend-group">
           <div class="legend-bar">
-            <div class="color"></div>
+            <div class="color pink"></div>
             <span>選舉人數</span>
           </div>
-          <div class="legend-line">
-            <div class="color"></div>
-            <span>選舉人數</span>
+          <div class="legend-bar">
+            <div class="color green"></div>
+            <span>發出票數</span>
+          </div>
+          <div class="legend-bar">
+            <div class="color purple"></div>
+            <span>剩餘選票數</span>
+          </div>
+          <div class="legend-bar">
+            <div class="color orange"></div>
+            <span>有效票數</span>
+          </div>
+          <div class="legend-bar">
+            <div class="color blue"></div>
+            <span>無效票數</span>
+          </div>
+          <div class="legend-bar">
+            <div class="color gray"></div>
+            <span>未投票數</span>
           </div>
         </div>
       </div>
@@ -106,41 +114,17 @@ import ChartRow from '@/components/ChartRow.vue'
 import ChartColumn from '@/components/ChartColumn.vue'
 import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
-import { ref, nextTick } from 'vue'
+import searchBallot from '@/mockAPI'
+// import tpe from '../assets/data/tpe.json'
+import renderList from '@/assets/js/renderList.js'
+import { ref, nextTick, onMounted } from 'vue'
 
 const isClick = ref(false)
-const cityValue = ref([])
+const cityValue = ref(['0'])
 const distValue = ref([])
 const candidateValue = ref([])
-const city = [
-  {
-    value: '01',
-    label: '台北市',
-  },
-  {
-    value: '02',
-    label: '新北市',
-  },
-  {
-    value: '03',
-    label: '桃園市',
-  },
-  {
-    value: '04',
-    label: '新竹市',
-  },
-  {
-    value: '05',
-    label: '高雄市',
-  },
-]
-
-const dist = [
-  {
-    value: '001',
-    label: '信義區'
-  }
-]
+const city = ref([])
+const dist = ref([])
 
 const candidate = [
   {
@@ -173,7 +157,6 @@ const clicktoShow = async () => {
   window.onscroll = function () { setSticky() };
 }
 
-
 const setSticky = () => { 
   if (window.pageYOffset >= position.value) {
     filterBar.value.classList.add('sticky')
@@ -181,4 +164,27 @@ const setSticky = () => {
     filterBar.value.classList.remove('sticky')
   }
 }
+
+const bubbleData = ref([]);
+let req = {
+  basic: { level01: [0] }, filter: { candidate: [3] }
+};
+(async () => {
+  let result = await searchBallot(req)
+  bubbleData.value = { ...result }
+})();
+
+const setCity = () => { 
+  let list = [];
+  for (let i = 0; i < cityValue.value.length ; i++) { 
+    const res = renderList(cityValue.value[i])
+    const { data } = res[0];
+    list.push( ...data );
+  }
+  dist.value.push(...list);
+}
+
+onMounted(() => { 
+  city.value = renderList('city');
+})
 </script>
