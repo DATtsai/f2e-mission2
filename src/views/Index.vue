@@ -115,7 +115,6 @@ import ChartColumn from '@/components/ChartColumn.vue'
 import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
 import searchBallot from '@/mockAPI'
-// import tpe from '../assets/data/tpe.json'
 import renderList from '@/assets/js/renderList.js'
 import { ref, nextTick, onMounted } from 'vue'
 
