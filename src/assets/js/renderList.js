@@ -68,9 +68,16 @@ const listMap = [
   { // 連江縣
     value: '021', data: hsc },
 ];
-export default function(code) { 
+export default function (code) { 
+  console.log(code);
   if (code === 'city') {
     return city
+  } else if (code === '0') {
+    let alldata = [];
+    for (let i = 0; i < listMap.length; i++) {
+      alldata.push(...listMap[i].data)
+    }
+    return alldata
   } else {
     return listMap.filter((i) => {
       if (i.value === code) {

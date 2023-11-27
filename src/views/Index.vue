@@ -169,11 +169,15 @@ const bubbleLevel1Data = ref([]);
 
 const setCity = () => { 
   let list = [];
-  for (let i = 0; i < cityValue.value.length; i++) { 
-    console.log(cityValue.value);
-    const res = renderList(cityValue.value[i])
-    const { data } = res[0];
-    list.push( ...data );
+  for (let i = 0; i < cityValue.value.length; i++) {
+    if (cityValue.value[i] === '0') {
+      list = renderList('0');
+      break;
+    } else {
+      const res = renderList(cityValue.value[i])
+      const { data } = res[0];
+      list.push( ...data );
+    }
   }
   dist.value = list;
 }
@@ -185,13 +189,13 @@ const fetchData = () => {
   (async () => {
     let result = await searchBallot(req)
     console.log('result',result);
-    bubbleLevel1Data.value = { ...result }
-    console.log(bubbleLevel1Data.value);
+    // bubbleLevel1Data.value = { ...result }
+    // console.log(bubbleLevel1Data.value);
   })();
 }
 
 onMounted(() => { 
   city.value = renderList('city');
-  fetchData()
+  dist.value = renderList('0');
 })
 </script>
