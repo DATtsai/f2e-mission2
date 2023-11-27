@@ -44,7 +44,7 @@ const searchBallot = async (req) => {
                 for(let i=0; i<filter.candidate.length; i++) {
                     filter.candidate = filter.candidate.map(item => String(item))
                     result.level01 = result.level01.map(item => {
-                        item.candidateResult = item.candidateResult.filter(element => filter.candidate.includes(String(element.candidateNo)))
+                        item.filter = item.filter.filter(element => filter.candidate.includes(String(element.candidateNo)))
                         return item
                     })
                 }
@@ -53,7 +53,7 @@ const searchBallot = async (req) => {
                 for(let i=0; i<filter.candidate.length; i++) {
                     filter.candidate = filter.candidate.map(item => String(item))
                     result.level02 = result.level02.map(item => {
-                        item.candidateResult = item.candidateResult.filter(element => filter.candidate.includes(String(element.candidateNo)))
+                        item.filter = item.filter.filter(element => filter.candidate.includes(String(element.candidateNo)))
                         return item
                     })
                 }
@@ -62,7 +62,7 @@ const searchBallot = async (req) => {
                 for(let i=0; i<filter.candidate.length; i++) {
                     filter.candidate = filter.candidate.map(item => String(item))
                     result.level03 = result.level03.map(item => {
-                        item.candidateResult = item.candidateResult.filter(element => filter.candidate.includes(String(element.candidateNo)))
+                        item.filter = item.filter.filter(element => filter.candidate.includes(String(element.candidateNo)))
                         return item
                     })
                 }
