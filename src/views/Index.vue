@@ -42,13 +42,12 @@
           />
         </el-select>
       </div>
-
-      <div class="chart-block">
-        <div class="chart-name">圖表名稱</div>
+      <div class="chart-block" v-if="bubbleLevel1Data">
+        <div class="chart-name">基本投票統計</div>
         <div class="toolbar">
         </div>
         <div>
-          <ChartBubbleGroup :data-list="bubbleData"/>
+          <ChartBubbleGroup :data-list="bubbleLevel1Data"/>
         </div>
         <div class="legend-group">
           <div class="legend-bar">
@@ -77,7 +76,7 @@
           </div>
         </div>
       </div>
-      <div class="chart-block">
+      <!-- <div class="chart-block">
         <div class="chart-name">圖表名稱</div>
         <div class="toolbar">
           <el-select v-model="value" clearable placeholder="Select">
@@ -102,7 +101,7 @@
             <span>選舉人數</span>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -164,26 +163,35 @@ const setSticky = () => {
   }
 }
 
-const bubbleData = ref([]);
-let req = {
-  basic: { level01: [0] }, filter: { candidate: [3] }
-};
-(async () => {
-  let result = await searchBallot(req)
-  bubbleData.value = { ...result }
-})();
+const bubbleLevel1Data = ref([]);
+
+
 
 const setCity = () => { 
   let list = [];
-  for (let i = 0; i < cityValue.value.length ; i++) { 
+  for (let i = 0; i < cityValue.value.length; i++) { 
+    console.log(cityValue.value);
     const res = renderList(cityValue.value[i])
     const { data } = res[0];
     list.push( ...data );
   }
-  dist.value.push(...list);
+  dist.value = list;
+}
+
+const fetchData = () => {
+  let req = {
+    basic: { level01: ['0'], level02: ['000', '001'], level03: ['00000'] }, filter: { candidate: [3] }
+  };
+  (async () => {
+    let result = await searchBallot(req)
+    console.log('result',result);
+    bubbleLevel1Data.value = { ...result }
+    console.log(bubbleLevel1Data.value);
+  })();
 }
 
 onMounted(() => { 
   city.value = renderList('city');
+  fetchData()
 })
 </script>
