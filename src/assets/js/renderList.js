@@ -69,7 +69,6 @@ const listMap = [
     value: '021', data: hsc },
 ];
 export default function (code) { 
-  console.log(code);
   if (code === 'city') {
     return city
   } else if (code === '0') {

@@ -15,7 +15,7 @@
         <button class="button" @click="clicktoShow()">查看開票結果</button>
       </div>
     </div>
-    <div class="chart" id="chart" v-if="isClick">
+    <div class="chart" id="chart" v-if="isClickToShow">
       <div class="filter" id="filterBar">
         <el-select v-model="cityValue" @change="setCity()" multiple collapse-tags placeholder="縣市（可複選）">
           <el-option
@@ -25,7 +25,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="distValue" multiple collapse-tags placeholder="鄉鎮市區（可複選）" >
+        <el-select v-model="distValue" @change="fetchData()" multiple collapse-tags placeholder="鄉鎮市區（可複選）" >
           <el-option
             v-for="item in dist"
             :key="item.value"
@@ -42,37 +42,87 @@
           />
         </el-select>
       </div>
-      <div class="chart-block" v-if="bubbleLevel1Data">
-        <div class="chart-name">基本投票統計</div>
-        <div class="toolbar">
+      <div class="chart-block" >
+        <div v-if="bubbleLevel1Data || bubbleLevel1Data.label !== ''">
+          <div class="chart-name">基本投票統計</div>
+          <div>
+            <ChartBubbleGroup :data-list="bubbleLevel1Data" :key="bubble01"/>
+          </div>
+          <div class="legend-group">
+            <div class="legend-bar">
+              <div class="color pink"></div>
+              <span>選舉人數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color green"></div>
+              <span>發出票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color purple"></div>
+              <span>剩餘選票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color orange"></div>
+              <span>有效票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color blue"></div>
+              <span>無效票數</span>
+            </div>
+          </div>
         </div>
-        <div>
-          <ChartBubbleGroup :data-list="bubbleLevel1Data"/>
+        <div v-if="bubbleLevel2Data.length>0" style="margin-top:2rem;">
+          <div>
+            <ChartBubbleGroup :data-list="bubbleLevel2Data" :key="bubble02"/>
+          </div>
+          <div class="legend-group">
+            <div class="legend-bar">
+              <div class="color pink"></div>
+              <span>選舉人數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color green"></div>
+              <span>發出票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color purple"></div>
+              <span>剩餘選票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color orange"></div>
+              <span>有效票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color blue"></div>
+              <span>無效票數</span>
+            </div>
+          </div>
         </div>
-        <div class="legend-group">
-          <div class="legend-bar">
-            <div class="color pink"></div>
-            <span>選舉人數</span>
+        <div v-if="bubbleLevel3Data.length>0" style="margin-top:2rem;">
+          <div>
+            <ChartBubbleGroup :data-list="bubbleLevel3Data" :key="bubble03"/>
           </div>
-          <div class="legend-bar">
-            <div class="color green"></div>
-            <span>發出票數</span>
-          </div>
-          <div class="legend-bar">
-            <div class="color purple"></div>
-            <span>剩餘選票數</span>
-          </div>
-          <div class="legend-bar">
-            <div class="color orange"></div>
-            <span>有效票數</span>
-          </div>
-          <div class="legend-bar">
-            <div class="color blue"></div>
-            <span>無效票數</span>
-          </div>
-          <div class="legend-bar">
-            <div class="color gray"></div>
-            <span>未投票數</span>
+          <div class="legend-group">
+            <div class="legend-bar">
+              <div class="color pink"></div>
+              <span>選舉人數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color green"></div>
+              <span>發出票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color purple"></div>
+              <span>剩餘選票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color orange"></div>
+              <span>有效票數</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color blue"></div>
+              <span>無效票數</span>
+            </div>
           </div>
         </div>
       </div>
@@ -117,13 +167,12 @@ import searchBallot from '@/mockAPI'
 import renderList from '@/assets/js/renderList.js'
 import { ref, nextTick, onMounted } from 'vue'
 
-const isClick = ref(false)
+const isClickToShow = ref(false)
 const cityValue = ref(['0'])
 const distValue = ref([])
 const candidateValue = ref([])
 const city = ref([])
 const dist = ref([])
-
 const candidate = [
   {
     value: '1',
@@ -139,11 +188,12 @@ const candidate = [
   }
 ]
 
+// 頁面
 const filterBar = ref();
 const position = ref();
 
 const clicktoShow = async () => { 
-  isClick.value = true;
+  isClickToShow.value = true;
   await nextTick();
   window.scrollTo({
     top: document.getElementById('chart').offsetTop,
@@ -151,7 +201,6 @@ const clicktoShow = async () => {
   });
   filterBar.value = document.getElementById('filterBar');
   position.value = filterBar.value.offsetTop;
-  
   window.onscroll = function () { setSticky() };
 }
 
@@ -163,11 +212,14 @@ const setSticky = () => {
   }
 }
 
-const bubbleLevel1Data = ref([]);
-
-
-
-const setCity = () => { 
+// data
+const bubbleLevel1Data = ref({});
+const bubbleLevel2Data = ref([]);
+const bubbleLevel3Data = ref([]);
+const bubble01 = ref(0);
+const bubble02 = ref(0);
+const bubble03 = ref(0);
+const setCity = () => {
   let list = [];
   for (let i = 0; i < cityValue.value.length; i++) {
     if (cityValue.value[i] === '0') {
@@ -176,26 +228,53 @@ const setCity = () => {
     } else {
       const res = renderList(cityValue.value[i])
       const { data } = res[0];
-      list.push( ...data );
+      list.push(...data);
     }
   }
   dist.value = list;
-}
+  fetchData();
+};
+
 
 const fetchData = () => {
+  let basicParam = {};
+  let level2 = [];
+  delete basicParam.level01;
+  cityValue.value.forEach(i => {
+    if (i === '0') {
+      basicParam.level01 = ['0'];
+    } else {
+      level2.push(i);
+      basicParam.level02 = level2;
+    }
+  });
+  if (distValue.value.length > 0) {
+    basicParam.level03 = distValue.value; 
+  }
   let req = {
-    basic: { level01: ['0'], level02: ['000', '001'], level03: ['00000'] }, filter: { candidate: [3] }
+    basic: { ...basicParam }, filter: { }
   };
   (async () => {
-    let result = await searchBallot(req)
-    console.log('result',result);
-    // bubbleLevel1Data.value = { ...result }
-    // console.log(bubbleLevel1Data.value);
+    let result = await searchBallot(req);
+    const { level01, level02, level03 } = result;
+    if (level01) {
+      bubbleLevel1Data.value = level01[0].basic;
+      bubble01.value += 1;
+    }
+    if (level02) {
+      bubbleLevel2Data.value = level02.map(i => i.basic);
+      bubble02.value += 1;
+    }
+    if (level03) {
+      bubbleLevel3Data.value = level03.map(i => i.basic);
+      bubble03.value += 1;
+    }
   })();
 }
 
 onMounted(() => { 
   city.value = renderList('city');
   dist.value = renderList('0');
+  fetchData()
 })
 </script>
