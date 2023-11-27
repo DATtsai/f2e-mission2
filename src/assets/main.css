@@ -135,7 +135,7 @@ a{
       & .color {
         width: 0.75rem;
         height: 0.75rem;
-        background-color: aqua;
+        background-color: #fff;
       }
       & span{
         font-size: 0.75rem;
@@ -177,4 +177,23 @@ a{
   top: 0;
   z-index: 10;
   box-shadow: 0px 1px 5px 1px rgba(225, 225, 225, 0.1);
+}
+
+.pink {
+  background-color: #EA378B !important;
+}
+.green {
+  background-color: #20AD93 !important;
+}
+.purple {
+  background-color: #7C7EB9 !important;
+}
+.orange {
+  background-color: #C76C66 !important;
+}
+.blue {
+  background-color: #355070 !important;
+}
+.gray {
+  background-color: #646464 !important;
 }
