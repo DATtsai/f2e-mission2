@@ -229,8 +229,8 @@ import renderList from '@/assets/js/renderList.js'
 import { ref, nextTick, onMounted } from 'vue'
 
 const hoverID = (id) => {
-  let matchInfo = countyData.value?.level02.filter(item => item.id === id)[0]
-  if(matchInfo) landingInfo.value = matchInfo.basic
+  let matchInfo = countyData.value?.level02.filter(item => item.id === id)[0] || countyData.value?.level01[0] 
+  landingInfo.value = matchInfo.basic
 }
 
 const clickID = (id) => {
