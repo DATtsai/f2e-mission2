@@ -28,7 +28,7 @@ const params = ref({
   graphicColumnBarGroup: {
     barType: 'rect',
     barPadding: 0,
-    barGroupPadding: 30,
+    barGroupPadding: 16,
     barWidth: 16
   },
   // tooltipAside: {
