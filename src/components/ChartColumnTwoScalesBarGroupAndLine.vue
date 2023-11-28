@@ -31,16 +31,13 @@ const params = ref({
     barGroupPadding: 30,
     barWidth: 16
   },
-  // tooltipAside: {
-  //   templateHtml: (d) => {
-  //     return `
-  //     得票數<br>
-  //     ${d.dataset.y1ItemLabels[0]} : ${d.dataset.y1Data[0][0].value}<br>
-  //     ${d.dataset.y1ItemLabels[1]} : ${d.dataset.y1Data[1][0].value}<br>
-  //     ${d.dataset.y1ItemLabels[2]} : ${d.dataset.y1Data[2][0].value}<br>
-  //     `
-  //   }
-  // }
+  tooltipAside: {
+    templateHtml: (d) => {
+      return `
+        得票數<br>${d.dataset.y1Data.map(i => i[0].value).join("<br>")}
+      `
+    }
+  }
 })
 
 const dataset = {

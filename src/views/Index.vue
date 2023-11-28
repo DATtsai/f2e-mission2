@@ -190,32 +190,30 @@
         </div>
       </div>
       <!-- 縱向圖 -->
-      <!-- <div class="RowBarChart chart-block">
+      <div class="RowBarChart chart-block">
         <div class="chart-name">候選人選區得票比率</div>
-        <div class="toolbar">
-          <el-select v-model="value" clearable placeholder="Select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        </div>
         <div>
-          <ChartRowBarLayout />
+          <ChartRowBarLayout :row-data="rowData" :key="rowKey"/>
         </div>
         <div class="legend-group">
-          <div class="legend-bar">
-            <div class="color"></div>
-            <span>選舉人數</span>
+            <div class="legend-bar">
+              <div class="color c-orange"></div>
+              <span>宋楚瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-blue"></div>
+              <span>韓國瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-green"></div>
+              <span>蔡英文</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-red"></div>
+              <span>總票數</span>
+            </div>
           </div>
-          <div class="legend-line">
-            <div class="color"></div>
-            <span>選舉人數</span>
-          </div>
-        </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -287,6 +285,9 @@ const columnLevel3Data = ref([]);
 const column01 = ref(0);
 const column02 = ref(0);
 const column03 = ref(0);
+const rowData = ref([]);
+const rowKey = ref(0);
+
 const setCity = () => {
   let list = [];
   for (let i = 0; i < cityValue.value.length; i++) {
@@ -309,7 +310,6 @@ const setCity = () => {
 const fetchData = () => {
   let basicParam = {};
   let level2 = [];
-  delete basicParam.level01;
   cityValue.value.forEach(i => {
     if (i === '0') {
       basicParam.level01 = ['0'];
@@ -327,34 +327,87 @@ const fetchData = () => {
   (async () => {
     let result = await searchBallot(req);
     const { level01, level02, level03 } = result;
+    let rowParam = {
+      yLabels: [],
+      data: [],
+      itemLabels: [
+      "宋楚瑜、余湘",
+      "韓國瑜、張善政",
+      "蔡英文、賴清德",
+      "投票數"
+      ]
+    }
     if (level01) {
       bubbleLevel1Data.value = level01[0].basic;
       bubble01.value += 1;
       columnLevel1Data.value = level01[0];
+      level01.forEach((item) => { 
+        rowParam.yLabels.push(item.basic.label);
+        item.filter.forEach(i => { 
+          const candidateIndex = i.candidateNo - 1; 
+          if (!rowParam.data[candidateIndex]) {
+            rowParam.data[candidateIndex] = [];
+          };
+          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
+        })
+        if (!rowParam.data[3]) { 
+          rowParam.data[3] = []
+          rowParam.data[3].push({ value: Number(item.basic.voteCount) });
+        };
+      })
       if (isHasTaiwan.value) {
-        console.log(isHasTaiwan.value);
         column01.value += 1;
-      }
+      };
     }
     if (level02) {
       bubbleLevel2Data.value = level02.map(i => i.basic);
       columnLevel2Data.value = level02;
       bubble02.value += 1;
       column02.value += 1;
+      level02.forEach((item) => { 
+        rowParam.yLabels.push(item.basic.label);
+        item.filter.forEach(i => { 
+          const candidateIndex = i.candidateNo - 1; 
+          if (!rowParam.data[candidateIndex]) {
+            rowParam.data[candidateIndex] = [];
+          };
+          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
+        })
+        if (!rowParam.data[3]) { 
+          rowParam.data[3] = []
+        }
+        rowParam.data[3].push({ value: Number(item.basic.voteCount) });
+      })
     }
     if (level03) {
       bubbleLevel3Data.value = level03.map(i => i.basic);
       columnLevel3Data.value = level03;
       bubble03.value += 1;
       column03.value += 1;
+      level03.forEach((item) => { 
+        rowParam.yLabels.push(item.basic.label);
+        item.filter.forEach(i => { 
+          const candidateIndex = i.candidateNo - 1; 
+          if (!rowParam.data[candidateIndex]) {
+            rowParam.data[candidateIndex] = [];
+          };
+          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
+        })
+        if (!rowParam.data[3]) { 
+          rowParam.data[3] = []
+        }
+        rowParam.data[3].push({ value: Number(item.basic.voteCount) });
+      })
     }
+    rowKey.value += 1;
+    rowData.value = rowParam;
   })();
 }
 
 onMounted(() => { 
   city.value = renderList('city');
   dist.value = renderList('0');
-  fetchData()
+  fetchData();
   isHasTaiwan.value = true;
 })
 </script>
