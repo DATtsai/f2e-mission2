@@ -30,9 +30,10 @@ const params = ref({
     "left": 100
   },
   axisRow: {
-    "yLabel": "",
-    "xLabel": "",
+    "yLabel": "地區",
+    "xLabel": "票數",
   },
+  xLabelOffset: [0, 200],
   graphicRowBarLayout: {
     groupLayout: [
       {
