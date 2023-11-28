@@ -12,6 +12,28 @@
       :data="dataset"
       :params="params"
     />
+    <div class="legend-group" style="margin-bottom: 24px">
+      <div class="legend-bar">
+        <div class="color pink"></div>
+        <span>選舉人數</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color green"></div>
+        <span>發出票數</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color purple"></div>
+        <span>剩餘選票數</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color orange"></div>
+        <span>有效票數</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color blue"></div>
+        <span>無效票數</span>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -54,25 +76,16 @@ const isChecked = (type) => {
 };
 
 const dataset = [];
-if (!Array.isArray(props.dataList)) {
-  const { label, pollbook, remain, validBallot, invalidBallot, ballot } = props.dataList;
+
+props.dataList.map(data => {
+  const { label, pollbook, remain, validBallot, invalidBallot, ballot } = data['basic'];
   const data1 = { id: `${label}_選舉人數`, label: label, value: Number(pollbook), type: '選舉人數' };
   const data2 = { id: `${label}_選舉人數`, label: label, value: Number(remain), type: '剩餘選票數' };
   const data3 = { id: `${label}_有效票數`, label: label, value: Number(validBallot), type: '有效票數' };
   const data4 = { id: `${label}_無效票數`, label: label, value: Number(invalidBallot), type: '無效票數' };
   const data5 = { id: `${label}_發出選票數`, label: label, value: Number(ballot), type: '發出選票數' };
   dataset.push(data1, data2, data3, data4, data5);
-} else {
-  props.dataList.map(data => {
-    const { label, pollbook, remain, validBallot, invalidBallot, ballot } = data;
-    const data1 = { id: `${label}_選舉人數`, label: label, value: Number(pollbook), type: '選舉人數' };
-    const data2 = { id: `${label}_選舉人數`, label: label, value: Number(remain), type: '剩餘選票數' };
-    const data3 = { id: `${label}_有效票數`, label: label, value: Number(validBallot), type: '有效票數' };
-    const data4 = { id: `${label}_無效票數`, label: label, value: Number(invalidBallot), type: '無效票數' };
-    const data5 = { id: `${label}_發出選票數`, label: label, value: Number(ballot), type: '發出選票數' };
-    dataset.push(data1, data2, data3, data4, data5);
-  })
-}
+})
 </script>
 
 <style scoped>
