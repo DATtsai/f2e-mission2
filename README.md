@@ -30,6 +30,6 @@ d3.js 圖表、地圖之開發
 element-plus UI componennt
 
 ## 開發人員
-Eleanore UI設計、切版處理、圖表開發
-DAT 地圖開發、圖表開發、mockAPI設計
-Laura 圖表開發、切版處理、頁面互動邏輯處理
+Eleanore UI設計、切版處理、圖表開發<br>
+DAT 地圖開發、圖表開發、mockAPI設計<br>
+Laura 圖表開發、切版處理、頁面互動邏輯處理<br>
