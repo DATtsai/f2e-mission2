@@ -34,7 +34,13 @@ const params = ref({
   tooltipAside: {
     templateHtml: (d) => {
       return `
-        得票數<br>${d.dataset.y1Data.map(i => i[0].value).join("<br>")}
+        得票數<br>${d.dataset.y1Data.map((i, index) => {
+          let name;
+          index === 0 ? name = '宋楚瑜 : ': false;
+          index === 1 ? name = '韓國瑜 : ': false;
+          index === 2 ? name = '蔡英文 : ': false;
+          return `${ name + i[0].value } 票`
+        }).join("<br>")}
       `
     }
   }
