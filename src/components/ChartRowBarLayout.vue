@@ -58,8 +58,7 @@ const params = {
     "groupLayout": [
       {
         "stackAmount": 3,
-        "barWidth": 24,
-        // "barR": 10
+        "barWidth": 12,
       },
       {
         "stackAmount": 1,
