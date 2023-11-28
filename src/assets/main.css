@@ -157,6 +157,10 @@ a{
         font-weight: 500;
       }  
     }
+    & .chart-container {
+      /* display: flex;
+      justify-content: center; */
+    }
   }
 }
 
@@ -196,4 +200,13 @@ a{
 }
 .gray {
   background-color: #646464 !important;
+}
+.c-green {
+  background-color: #8EC48E !important;
+}
+.c-blue {
+  background-color: #63ABE9 !important;
+}
+.c-orange {
+  background-color: #FFAB6F !important;
 }
