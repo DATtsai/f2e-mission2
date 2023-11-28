@@ -329,19 +329,20 @@ const fetchData = () => {
         columnLevel1Data.value = colParam1;
         // row Data
         rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach((i, index) => { 
-          if (!rowParam.data[index]) {
-            rowParam.data[index] = [];
-          };
-          rowParam.itemLabels.push(i.label);
-          rowParam.data[index].push({ value: Number(i.getBallot) });
-        })
-        rowParam.itemLabels.push("投票數");
-        const end = rowParam.data.length;
-        if (!rowParam.data[end]) { 
-          rowParam.data[end] = []
-        }
-        rowParam.data[end].push({ value: Number(item.basic.voteCount) });
+        console.log(1,rowParam);
+        // item.filter.forEach((i, index) => { 
+        //   if (!rowParam.data[index]) {
+        //     rowParam.data[index] = [];
+        //   };
+        //   rowParam.itemLabels.push(i.label);
+        //   rowParam.data[index].push({ value: Number(i.getBallot) });
+        // })
+        // rowParam.itemLabels.push("投票數");
+        // const end = rowParam.data.length;
+        // if (!rowParam.data[end]) { 
+        //   rowParam.data[end] = []
+        // }
+        // rowParam.data[end].push({ value: Number(item.basic.voteCount) });
       });
 
       if (isHasTaiwan.value) {
@@ -353,6 +354,7 @@ const fetchData = () => {
       bubble02.value += 1;
       const colParam2 = JSON.parse(JSON.stringify(colParam));
       level02.forEach((item) => { 
+        // console.log(item);
         // column Data
         colParam2.xLabels.push(item.basic.label);
         item.filter.forEach((i, index) => {
@@ -365,15 +367,16 @@ const fetchData = () => {
         });
         columnLevel2Data.value = colParam2;
         // row Data
-        rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach((i,index) => { 
-          if (!rowParam.data[index]) {
-            rowParam.data[index] = [];
-          };
-          rowParam.itemLabels.push(i.label);
-          rowParam.data[index].push({ value: Number(i.getBallot) });
-        })
-        rowParam.itemLabels.push("投票數");
+        // rowParam.yLabels.push(item.basic.label);
+        // item.filter.forEach((i,index) => { 
+        //   if (!rowParam.data[index]) {
+        //     console.log('data:',rowParam.data[index]);
+        //     rowParam.data[index] = [];
+        //   };
+        //   rowParam.itemLabels.push(i.label);
+        //   rowParam.data[index].push({ value: Number(i.getBallot) });
+        // })
+        // rowParam.itemLabels.push("投票數");
         // const end = rowParam.data.length;
         // if (!rowParam.data[end]) { 
         //   rowParam.data[end] = []
@@ -399,12 +402,18 @@ const fetchData = () => {
         columnLevel3Data.value = colParam3;
         // row Data
         rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach((i,index) => { 
+        item.filter.forEach((i, index) => {
+          console.log(i); 
           if (!rowParam.data[index]) {
             rowParam.data[index] = [];
           };
           rowParam.itemLabels.push(i.label);
           rowParam.data[index].push({ value: Number(i.getBallot) });
+          // const end = rowParam.data.length;
+          // if (!rowParam.data[end]) { 
+          //   rowParam.data[end] = []
+          // }
+          // rowParam.data[end].push({ value: Number(item.basic.voteCount) });
         })
         rowParam.itemLabels.push("投票數");
         // const end = rowParam.data.length;
