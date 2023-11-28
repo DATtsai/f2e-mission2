@@ -51,9 +51,9 @@ const dataset = {
   "y2Data": [],
   "xLabels": [],
   "y1ItemLabels": [
-    "宋楚瑜",
-    "韓國瑜",
-    "蔡英文"
+    "宋楚瑜,余湘",
+    "韓國瑜,張善政",
+    "蔡英文,賴清德"
   ],
   "y2ItemLabels": []
 };

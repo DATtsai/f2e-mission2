@@ -326,14 +326,15 @@ const fetchData = () => {
   };
   (async () => {
     let result = await searchBallot(req);
+    console.log(result);
     const { level01, level02, level03 } = result;
     let rowParam = {
       yLabels: [],
       data: [],
       itemLabels: [
-      "宋楚瑜、余湘",
-      "韓國瑜、張善政",
-      "蔡英文、賴清德",
+      "宋楚瑜,余湘",
+      "韓國瑜,張善政",
+      "蔡英文,賴清德",
       "投票數"
       ]
     }
