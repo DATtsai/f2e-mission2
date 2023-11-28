@@ -42,11 +42,13 @@
           />
         </el-select>
       </div>
-      <div class="chart-block" >
+      <!-- 泡泡圖 -->
+      <div class="bubbleChart chart-block">
+        <!-- todo: 確認 level01 資料 -->
         <div v-if="bubbleLevel1Data || bubbleLevel1Data.label !== ''">
           <div class="chart-name">基本投票統計</div>
           <div>
-            <ChartBubbleGroup :data-list="bubbleLevel1Data" :key="bubble01"/>
+            <ChartBubbleGroup :data-list="bubbleLevel1Data" :key="`全國${bubble01}`"/>
           </div>
           <div class="legend-group">
             <div class="legend-bar">
@@ -73,7 +75,7 @@
         </div>
         <div v-if="bubbleLevel2Data.length>0" style="margin-top:2rem;">
           <div>
-            <ChartBubbleGroup :data-list="bubbleLevel2Data" :key="bubble02"/>
+            <ChartBubbleGroup :data-list="bubbleLevel2Data" :key="`全國${bubble02}`"/>
           </div>
           <div class="legend-group">
             <div class="legend-bar">
@@ -100,7 +102,7 @@
         </div>
         <div v-if="bubbleLevel3Data.length>0" style="margin-top:2rem;">
           <div>
-            <ChartBubbleGroup :data-list="bubbleLevel3Data" :key="bubble03"/>
+            <ChartBubbleGroup :data-list="bubbleLevel3Data" :key="`全國${bubble03}`"/>
           </div>
           <div class="legend-group">
             <div class="legend-bar">
@@ -126,8 +128,70 @@
           </div>
         </div>
       </div>
-      <!-- <div class="chart-block">
-        <div class="chart-name">圖表名稱</div>
+      <!-- 長條圖 -->
+      <div class="BarChart chart-block">
+        <div class="chart-name">候選人選區得票數</div>
+        <div>
+          <div class="chart-container">
+            <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel1Data" :key="`長條${column01}`"/>
+          </div>
+          <div class="legend-group">
+            <div class="legend-bar">
+              <div class="color c-orange"></div>
+              <span>宋楚瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-blue"></div>
+              <span>韓國瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-green"></div>
+              <span>蔡英文</span>
+            </div>
+          </div>
+        </div>
+        <div v-if="columnLevel2Data.length>0" style="margin-top:2rem;">
+          <div class="chart-container">
+            <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel2Data" :key="`長條${column02}`"/>
+          </div>
+          <div class="legend-group">
+            <div class="legend-bar">
+              <div class="color c-orange"></div>
+              <span>宋楚瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-blue"></div>
+              <span>韓國瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-green"></div>
+              <span>蔡英文</span>
+            </div>
+          </div>
+        </div>
+        <div v-if="columnLevel3Data.length>0" style="margin-top:2rem;">
+          <div class="chart-container">
+            <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel3Data" :key="`長條${column03}`"/>
+          </div>
+          <div class="legend-group">
+            <div class="legend-bar">
+              <div class="color c-orange"></div>
+              <span>宋楚瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-blue"></div>
+              <span>韓國瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-green"></div>
+              <span>蔡英文</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 縱向圖 -->
+      <!-- <div class="RowBarChart chart-block">
+        <div class="chart-name">候選人選區得票比率</div>
         <div class="toolbar">
           <el-select v-model="value" clearable placeholder="Select">
           <el-option
@@ -157,10 +221,7 @@
 </template>
 
 <script setup>
-import ChartArcPie from '@/components/ChartArcPie.vue'
 import ChartColumnTwoScalesBarGroupAndLine from '@/components/ChartColumnTwoScalesBarGroupAndLine.vue'
-import ChartRow from '@/components/ChartRow.vue'
-import ChartColumn from '@/components/ChartColumn.vue'
 import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
 import searchBallot from '@/mockAPI'
@@ -175,7 +236,7 @@ const city = ref([])
 const dist = ref([])
 const candidate = [
   {
-    value: '1',
+    value: '3',
     label: '蔡英文'
   },
   {
@@ -183,10 +244,11 @@ const candidate = [
     label: '韓國瑜'
   },
   {
-    value: '3',
+    value: '1',
     label: '宋楚瑜'
   }
-]
+];
+const isHasTaiwan = ref(false);
 
 // 頁面
 const filterBar = ref();
@@ -219,6 +281,12 @@ const bubbleLevel3Data = ref([]);
 const bubble01 = ref(0);
 const bubble02 = ref(0);
 const bubble03 = ref(0);
+const columnLevel1Data = ref([]);
+const columnLevel2Data = ref([]);
+const columnLevel3Data = ref([]);
+const column01 = ref(0);
+const column02 = ref(0);
+const column03 = ref(0);
 const setCity = () => {
   let list = [];
   for (let i = 0; i < cityValue.value.length; i++) {
@@ -231,8 +299,10 @@ const setCity = () => {
       list.push(...data);
     }
   }
+  cityValue.value.indexOf('0') > -1 ? isHasTaiwan.value = true : isHasTaiwan.value = false;
   dist.value = list;
   fetchData();
+
 };
 
 
@@ -260,14 +330,23 @@ const fetchData = () => {
     if (level01) {
       bubbleLevel1Data.value = level01[0].basic;
       bubble01.value += 1;
+      columnLevel1Data.value = level01[0];
+      if (isHasTaiwan.value) {
+        console.log(isHasTaiwan.value);
+        column01.value += 1;
+      }
     }
     if (level02) {
       bubbleLevel2Data.value = level02.map(i => i.basic);
+      columnLevel2Data.value = level02;
       bubble02.value += 1;
+      column02.value += 1;
     }
     if (level03) {
       bubbleLevel3Data.value = level03.map(i => i.basic);
+      columnLevel3Data.value = level03;
       bubble03.value += 1;
+      column03.value += 1;
     }
   })();
 }
@@ -276,5 +355,6 @@ onMounted(() => {
   city.value = renderList('city');
   dist.value = renderList('0');
   fetchData()
+  isHasTaiwan.value = true;
 })
 </script>
