@@ -17,17 +17,17 @@ const params = ref({
   axisColumnTwoScales: {
     xLabel: '縣市',
     y1Label: '得票數',
-    y2Visible: false
+    y2Visible: false,
   },
   padding: {
     top: 50,
     right: 70,
-    bottom: 50,
+    bottom: 70,
     left: 100
   },
   graphicColumnBarGroup: {
     barType: 'rect',
-    barPadding: 1,
+    barPadding: 0,
     barGroupPadding: 30,
     barWidth: 16
   },
@@ -83,3 +83,20 @@ if(Array.isArray(props.columnData) && props.columnData.length > 0){
   });
 }
 </script>
+
+<style scoped>
+/* BP-Chart X軸文字RWD改垂直 */
+::v-deep .xAxis .tick text {
+  @media screen and (width <=768px) {
+    transform-origin: -12px -12px !important;
+    -webkit-writing-mode: vertical-lr !important;
+    writing-mode: vertical-lr !important;
+  }
+}
+
+/* ::v-deep .bpchart__bar rect {
+  @media screen and (width <=768px) {
+  width: 4px !important;
+  }
+} */
+</style>
