@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg id="county" width="900" height="500"></svg>
+    <svg id="county" width="1000" height="800"></svg>
   </div>
 </template>
 
@@ -40,13 +40,12 @@ const idMap = {
 
 onMounted(async () => {
   const geometries = topojson.feature(countyJson, countyJson.objects['COUNTY_MOI_1090820']) // 把topojson生成geojson
-  // console.log(geometries)
-  const project = d3.geoMercator().center([123, 24]).scale(5500) // center 指定台灣座標
+  const project = d3.geoMercator().center([123, 24]).scale(8000) // center 指定台灣座標
   const pathGenerator = d3.geoPath().projection(project) // 依投影方法產生路徑生成器
 
   // portrait map
-  d3.select('#county').append('g')
-  d3.selectAll('g')
+  d3.select('#county').append('g').append('g').attr('class', 'map')
+  d3.selectAll('g.map')
     .selectAll('path')
     .data(geometries.features).enter()
     .append('path')
@@ -57,6 +56,9 @@ onMounted(async () => {
       .attr('class', d => 'county_' + d.properties['COUNTYCODE'])
     .append('title')
       .text(d => d.properties['COUNTYNAME'])
+  
+  d3.select('g')
+    .attr('transform', 'translate(350, 150)')
 
   // hover area
   d3.selectAll('path').on('mouseover', (data, index, node) => {
@@ -80,15 +82,15 @@ onMounted(async () => {
   
   // zoom in&out feature
   d3.select('svg').call(d3.zoom().on('zoom', () => {
-    d3.select('g')
+    d3.select('g.map')
       .attr('transform', d3.event.transform)
   }))
 
 })
 
-watch(()=>clickID.value, (val) => {
-  console.log(val)
-})
+// watch(()=>clickID.value, (val) => {
+//   console.log(val)
+// })
 
 </script>
 

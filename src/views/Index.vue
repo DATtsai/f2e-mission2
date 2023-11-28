@@ -2,15 +2,16 @@
   <div class="page">
     <div class="landing">
       <div class="map-box">
-        <img class="tw-map" src="@/assets/tw.svg" alt="台灣地圖">
+        <MapCounty @hoverID="hoverID" @clickID="clickID" />
+        <!-- <img class="tw-map" src="@/assets/tw.svg" alt="台灣地圖"> -->
       </div>
       <div class="content">
         <img class="logo" src="@/assets/logo.svg" alt="決戰2020總統大選"> 
-        <div class="nowrap"><h1 class="region">全國</h1><h1>投票概況</h1></div>
+        <div class="nowrap"><h1 class="region">{{landingInfo.label}}</h1><h1>投票概況</h1></div>
         <div class="des">將滑鼠移至縣市查看各選區投票概況</div>
         <div class="data-number">
-          <h2>投票數：<span>14464571</span></h2>
-          <h2>投票率：<span>74.9%</span></h2>
+          <h2>投票數：<span>{{landingInfo.voteCount}}</span></h2>
+          <h2>投票率：<span>{{landingInfo.voteRatio}}%</span></h2>
         </div>
         <button class="button" @click="clicktoShow()">查看開票結果</button>
       </div>
@@ -222,9 +223,27 @@
 import ChartColumnTwoScalesBarGroupAndLine from '@/components/ChartColumnTwoScalesBarGroupAndLine.vue'
 import ChartRowBarLayout from '@/components/ChartRowBarLayout.vue'
 import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
+import MapCounty from '@/components/MapCounty.vue'
 import searchBallot from '@/mockAPI'
 import renderList from '@/assets/js/renderList.js'
 import { ref, nextTick, onMounted } from 'vue'
+
+const hoverID = (id) => {
+  let matchInfo = countyData.value?.level02.filter(item => item.id === id)[0]
+  if(matchInfo) landingInfo.value = matchInfo.basic
+}
+
+const clickID = (id) => {
+  console.log(id)
+}
+
+const landingInfo = ref({})
+const countyData = ref({});
+
+(async () => {
+  countyData.value = await searchBallot({ basic: { level01: [], level02: [] }})
+  landingInfo.value = countyData.value?.level01[0].basic
+})()
 
 const isClickToShow = ref(false)
 const cityValue = ref(['0'])
