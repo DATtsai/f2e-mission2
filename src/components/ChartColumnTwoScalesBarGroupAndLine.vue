@@ -8,10 +8,11 @@
   </div>
 </template>
 <script setup>
+import { ref } from 'vue'
 import D3ModuleContainer from '@bpchart/vue/components/D3ModuleContainer.vue'
 import { ChartColumnTwoScalesBarGroupAndLine } from '@bpchart/d3-modules/chartColumnTwoScales'
 
-const params = {
+const params = ref({
   y1Colors: ['#FFAB6F','#63ABE9','#8EC48E'],
   axisColumnTwoScales: {
     xLabel: '縣市',
@@ -26,9 +27,9 @@ const params = {
   },
   graphicColumnBarGroup: {
     barType: 'rect',
-    barPadding: 5,
-    barGroupPadding: 20,
-    barwidth: 1
+    barPadding: 1,
+    barGroupPadding: 30,
+    barWidth: 16
   },
   // tooltipAside: {
   //   templateHtml: (d) => {
@@ -40,7 +41,7 @@ const params = {
   //     `
   //   }
   // }
-}
+})
 
 const dataset = {
   "y1Data": [],
