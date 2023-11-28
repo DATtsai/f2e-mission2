@@ -26,7 +26,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="distValue" @change="fetchData()" multiple collapse-tags placeholder="鄉鎮市區（可複選）" >
+        <el-select v-model="distValue" @change="fetchData(getReq(['level03']))" multiple collapse-tags placeholder="鄉鎮市區（可複選）" >
           <el-option
             v-for="item in dist"
             :key="item.value"
@@ -34,7 +34,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="candidateValue" multiple collapse-tags placeholder="候選人（可複選）">
+        <el-select v-model="candidateValue" @change="fetchData(getReq(['level01', 'level02', 'level03', 'candidate']))" multiple collapse-tags placeholder="候選人（可複選）">
           <el-option
             v-for="item in candidate"
             :key="item.value"
@@ -46,174 +46,60 @@
       <!-- 泡泡圖 -->
       <div class="bubbleChart chart-block">
         <!-- todo: 確認 level01 資料 -->
-        <div v-if="bubbleLevel1Data || bubbleLevel1Data.label !== ''">
-          <div class="chart-name">基本投票統計</div>
-          <div>
-            <ChartBubbleGroup :data-list="bubbleLevel1Data" :key="`全國${bubble01}`"/>
-          </div>
-          <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color pink"></div>
-              <span>選舉人數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color green"></div>
-              <span>發出票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color purple"></div>
-              <span>剩餘選票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color orange"></div>
-              <span>有效票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color blue"></div>
-              <span>無效票數</span>
-            </div>
+        <div class="chart-name">基本投票統計</div>
+        <div v-if="level01Data.length">
+          <div class="chart-container">
+            <ChartBubbleGroup :data-list="level01Data" :key="`泡泡${refreshKey.level01}`"/>
           </div>
         </div>
-        <div v-if="bubbleLevel2Data.length>0" style="margin-top:2rem;">
-          <div>
-            <ChartBubbleGroup :data-list="bubbleLevel2Data" :key="`全國${bubble02}`"/>
-          </div>
-          <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color pink"></div>
-              <span>選舉人數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color green"></div>
-              <span>發出票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color purple"></div>
-              <span>剩餘選票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color orange"></div>
-              <span>有效票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color blue"></div>
-              <span>無效票數</span>
-            </div>
+        <div v-if="level02Data.length">
+          <div class="chart-container">
+            <ChartBubbleGroup :data-list="level02Data" :key="`泡泡${refreshKey.level02}`"/>
           </div>
         </div>
-        <div v-if="bubbleLevel3Data.length>0" style="margin-top:2rem;">
-          <div>
-            <ChartBubbleGroup :data-list="bubbleLevel3Data" :key="`全國${bubble03}`"/>
-          </div>
-          <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color pink"></div>
-              <span>選舉人數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color green"></div>
-              <span>發出票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color purple"></div>
-              <span>剩餘選票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color orange"></div>
-              <span>有效票數</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color blue"></div>
-              <span>無效票數</span>
-            </div>
+        <div v-if="level03Data.length">
+          <div class="chart-container">
+            <ChartBubbleGroup :data-list="level03Data" :key="`泡泡${refreshKey.level03}`"/>
           </div>
         </div>
       </div>
       <!-- 長條圖 -->
       <div class="BarChart chart-block">
         <div class="chart-name">候選人選區得票數</div>
-        <div>
+        <div v-if="level01Data.length">
           <div class="chart-container">
-            <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel1Data" :key="`長條${column01}`"/>
-          </div>
-          <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
-            </div>
+            <ChartColumnTwoScalesBarGroupAndLine :column-data="level01Data" :key="`長條${refreshKey.level01}`"/>
           </div>
         </div>
-        <div v-if="columnLevel2Data.length>0" style="margin-top:2rem;">
+        <div v-if="level02Data.length">
           <div class="chart-container">
-            <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel2Data" :key="`長條${column02}`"/>
-          </div>
-          <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
-            </div>
+            <ChartColumnTwoScalesBarGroupAndLine :column-data="level02Data" :key="`長條${refreshKey.level02}`"/>
           </div>
         </div>
-        <div v-if="columnLevel3Data.length>0" style="margin-top:2rem;">
+        <div v-if="level03Data.length">
           <div class="chart-container">
-            <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel3Data" :key="`長條${column03}`"/>
-          </div>
-          <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
-            </div>
+            <ChartColumnTwoScalesBarGroupAndLine :column-data="level03Data" :key="`長條${refreshKey.level03}`"/>
           </div>
         </div>
       </div>
       <!-- 縱向圖 -->
       <div class="RowBarChart chart-block">
         <div class="chart-name">候選人選區得票比率</div>
-        <div>
-          <ChartRowBarLayout :row-data="rowData" :key="rowKey"/>
-        </div>
-        <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-red"></div>
-              <span>總票數</span>
-            </div>
+        <div v-if="level01Data.length">
+          <div class="chart-container">
+            <ChartRowBarLayout :row-data="level01Data" :key="`比例${refreshKey.level01}`"/>
           </div>
+        </div>        
+        <div v-if="level02Data.length">
+          <div class="chart-container">
+            <ChartRowBarLayout :row-data="level02Data" :key="`比例${refreshKey.level02}`"/>
+          </div>
+        </div>
+        <div v-if="level03Data.length">
+          <div class="chart-container">
+            <ChartRowBarLayout :row-data="level03Data" :key="`比例${refreshKey.level03}`"/>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -226,7 +112,11 @@ import ChartBubbleGroup from '@/components/ChartBubbleGroup.vue'
 import MapCounty from '@/components/MapCounty.vue'
 import searchBallot from '@/mockAPI'
 import renderList from '@/assets/js/renderList.js'
-import { ref, nextTick, onMounted } from 'vue'
+import { ref, nextTick, onMounted, computed } from 'vue'
+
+// 地圖資料互動
+const landingInfo = ref({})
+const countyData = ref({})
 
 const hoverID = (id) => {
   let matchInfo = countyData.value?.level02.filter(item => item.id === id)[0] || countyData.value?.level01[0] 
@@ -234,11 +124,10 @@ const hoverID = (id) => {
 }
 
 const clickID = (id) => {
-  console.log(id)
+  cityValue.value = [id]
+  setCity()
+  clicktoShow()
 }
-
-const landingInfo = ref({})
-const countyData = ref({});
 
 (async () => {
   countyData.value = await searchBallot({ basic: { level01: [], level02: [] }})
@@ -246,6 +135,7 @@ const countyData = ref({});
 })()
 
 const isClickToShow = ref(false)
+const countryValue = computed(() => cityValue.value.findIndex(item => item === '0') > -1 ? ['0'] : [])
 const cityValue = ref(['0'])
 const distValue = ref([])
 const candidateValue = ref([])
@@ -254,15 +144,15 @@ const dist = ref([])
 const candidate = [
   {
     value: '3',
-    label: '蔡英文'
+    label: '蔡英文、賴清德'
   },
   {
     value: '2',
-    label: '韓國瑜'
+    label: '韓國瑜、張善政'
   },
   {
     value: '1',
-    label: '宋楚瑜'
+    label: '宋楚瑜、余湘'
   }
 ];
 const isHasTaiwan = ref(false);
@@ -292,20 +182,32 @@ const setSticky = () => {
 }
 
 // data
-const bubbleLevel1Data = ref({});
-const bubbleLevel2Data = ref([]);
-const bubbleLevel3Data = ref([]);
-const bubble01 = ref(0);
-const bubble02 = ref(0);
-const bubble03 = ref(0);
-const columnLevel1Data = ref([]);
-const columnLevel2Data = ref([]);
-const columnLevel3Data = ref([]);
-const column01 = ref(0);
-const column02 = ref(0);
-const column03 = ref(0);
-const rowData = ref([]);
-const rowKey = ref(0);
+const level01Data = ref([])
+const level02Data = ref([])
+const level03Data = ref([])
+const refreshKey = ref({level01: 0, level02: 0, level03: 0})
+
+const getReq = (config) => { // config: []
+  let basic = {}
+  let filter = {}
+  for(let item of config) {
+    switch (item){
+      case 'level01':
+        if(countryValue.value.length) basic[item] = countryValue.value
+        break
+      case 'level02':
+        if(cityValue.value.filter(item => item !== '0').length) basic[item] = cityValue.value.filter(item => item !== '0')
+        break
+      case 'level03':
+        if(distValue.value.length) basic[item] = distValue.value
+        break
+      case 'candidate':
+        if(candidateValue.value.length) filter[item] = candidateValue.value
+        break
+    }
+  }
+  return { basic, filter }
+}
 
 const setCity = () => {
   let list = [];
@@ -321,112 +223,33 @@ const setCity = () => {
   }
   cityValue.value.indexOf('0') > -1 ? isHasTaiwan.value = true : isHasTaiwan.value = false;
   dist.value = list;
-  fetchData();
 
+  fetchData(getReq(['level01', 'level02']));
 };
 
-
-const fetchData = () => {
-  let basicParam = {};
-  let level2 = [];
-  cityValue.value.forEach(i => {
-    if (i === '0') {
-      basicParam.level01 = ['0'];
-    } else {
-      level2.push(i);
-      basicParam.level02 = level2;
-    }
-  });
-  if (distValue.value.length > 0) {
-    basicParam.level03 = distValue.value; 
-  }
-  let req = {
-    basic: { ...basicParam }, filter: { }
-  };
+const fetchData = (req = {basic: {}}) => {
   (async () => {
     let result = await searchBallot(req);
     const { level01, level02, level03 } = result;
-    let rowParam = {
-      yLabels: [],
-      data: [],
-      itemLabels: [
-      "宋楚瑜、余湘",
-      "韓國瑜、張善政",
-      "蔡英文、賴清德",
-      "投票數"
-      ]
-    }
     if (level01) {
-      bubbleLevel1Data.value = level01[0].basic;
-      bubble01.value += 1;
-      columnLevel1Data.value = level01[0];
-      level01.forEach((item) => { 
-        rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach(i => { 
-          const candidateIndex = i.candidateNo - 1; 
-          if (!rowParam.data[candidateIndex]) {
-            rowParam.data[candidateIndex] = [];
-          };
-          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
-        })
-        if (!rowParam.data[3]) { 
-          rowParam.data[3] = []
-          rowParam.data[3].push({ value: Number(item.basic.voteCount) });
-        };
-      })
-      if (isHasTaiwan.value) {
-        column01.value += 1;
-      };
+      level01Data.value = level01
+      refreshKey.value.level01 += 1
     }
     if (level02) {
-      bubbleLevel2Data.value = level02.map(i => i.basic);
-      columnLevel2Data.value = level02;
-      bubble02.value += 1;
-      column02.value += 1;
-      level02.forEach((item) => { 
-        rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach(i => { 
-          const candidateIndex = i.candidateNo - 1; 
-          if (!rowParam.data[candidateIndex]) {
-            rowParam.data[candidateIndex] = [];
-          };
-          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
-        })
-        if (!rowParam.data[3]) { 
-          rowParam.data[3] = []
-        }
-        rowParam.data[3].push({ value: Number(item.basic.voteCount) });
-      })
+      level02Data.value = level02
+      refreshKey.value.level02 += 1
     }
     if (level03) {
-      bubbleLevel3Data.value = level03.map(i => i.basic);
-      columnLevel3Data.value = level03;
-      bubble03.value += 1;
-      column03.value += 1;
-      level03.forEach((item) => { 
-        rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach(i => { 
-          const candidateIndex = i.candidateNo - 1; 
-          if (!rowParam.data[candidateIndex]) {
-            rowParam.data[candidateIndex] = [];
-          };
-          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
-        })
-        if (!rowParam.data[3]) { 
-          rowParam.data[3] = []
-        }
-        rowParam.data[3].push({ value: Number(item.basic.voteCount) });
-      })
+      level03Data.value = level03
+      refreshKey.value.level03 += 1
     }
-    rowKey.value += 1;
-    rowData.value = rowParam;
   })();
 }
 
 onMounted(() => { 
   city.value = renderList('city');
   dist.value = renderList('0');
-  fetchData();
+  fetchData(getReq(['level01']));
   isHasTaiwan.value = true;
 })
 </script>

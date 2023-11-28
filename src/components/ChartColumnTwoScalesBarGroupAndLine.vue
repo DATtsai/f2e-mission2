@@ -5,6 +5,20 @@
       :dataset="dataset"
       :params="params"
     />
+    <div class="legend-group" style="margin-bottom: 24px">
+      <div class="legend-bar">
+        <div class="color c-orange"></div>
+        <span>宋楚瑜、余湘</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color c-blue"></div>
+        <span>韓國瑜、張善政</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color c-green"></div>
+        <span>蔡英文、賴清德</span>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -36,9 +50,9 @@ const params = ref({
       return `
         得票數<br>${d.dataset.y1Data.map((i, index) => {
           let name;
-          index === 0 ? name = '宋楚瑜 : ': false;
-          index === 1 ? name = '韓國瑜 : ': false;
-          index === 2 ? name = '蔡英文 : ': false;
+          index === 0 ? name = '宋楚瑜、余湘 : ': false;
+          index === 1 ? name = '韓國瑜、張善政 : ': false;
+          index === 2 ? name = '蔡英文、賴清德 : ': false;
           return `${ name + i[0].value } 票`
         }).join("<br>")}
       `
@@ -51,40 +65,28 @@ const dataset = {
   "y2Data": [],
   "xLabels": [],
   "y1ItemLabels": [
-    "宋楚瑜",
-    "韓國瑜",
-    "蔡英文"
+    "宋楚瑜、余湘",
+    "韓國瑜、張善政",
+    "蔡英文、賴清德"
   ],
   "y2ItemLabels": []
 };
 const props = defineProps(['columnData']);
 const xlabel = [];
 
-if (props.columnData && !Array.isArray(props.columnData)) {
-  const label = props.columnData.basic.label;
-  xlabel.push(label);
-  dataset.xLabels.push(xlabel);
-  const ballotValue = props.columnData.filter.map((e) => {
-    let list = [];
-    list.push({ value: e.getBallot });
-    dataset.y1ItemLabels.push(e.label)
-    return list
-  })
-  dataset.y1Data = ballotValue;
-}
-if(Array.isArray(props.columnData) && props.columnData.length > 0){
-  const dataList = props.columnData;
-  dataList.forEach((item) => {
-    item.filter.forEach((filterItem) => {
-      const candidateIndex = filterItem.candidateNo - 1; 
-      if (!dataset.y1Data[candidateIndex]) {
-        dataset.y1Data[candidateIndex] = [];
-      }
-      dataset.y1Data[candidateIndex].push({ value: filterItem.getBallot });
-    });
-    dataset.xLabels.push(item.basic.label);
+const dataList = props.columnData;
+dataList.forEach((item) => {
+  item.filter.forEach((filterItem) => {
+    const candidateIndex = filterItem.candidateNo - 1; 
+    if (!dataset.y1Data[candidateIndex]) {
+      dataset.y1Data[candidateIndex] = [];
+    }
+    dataset.y1Data[candidateIndex].push({ value: filterItem.getBallot });
   });
-}
+  dataset.xLabels.push(item.basic.label);
+});
+console.log('dataset', dataset)
+
 </script>
 
 <style scoped>
