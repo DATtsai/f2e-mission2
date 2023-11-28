@@ -7,12 +7,36 @@
 <script setup>
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import countyJson from '@/assets/map/COUNTY_MOI_1090820.json'
 
-console.log(d3)
-console.log(topojson)
-console.log(countyJson)
+const emits = defineEmits(['hoverID', 'clickID'])
+const clickID = ref('')
+const hoverID = ref('')
+const idMap = {
+  '63000':'000',
+  '65000':'001',
+  '68000':'002',
+  '66000':'003',
+  '67000':'004',
+  '64000':'005',
+  '10004':'006',
+  '10005':'007',
+  '10007':'008',
+  '10008':'009',
+  '10009':'010',
+  '10010':'011',
+  '10013':'012',
+  '10002':'013',
+  '10015':'014',
+  '10014':'015',
+  '10016':'016',
+  '10017':'017',
+  '10018':'018',
+  '10020':'019',
+  '09020':'020',
+  '09007':'021',
+}
 
 onMounted(async () => {
   const geometries = topojson.feature(countyJson, countyJson.objects['COUNTY_MOI_1090820']) // 把topojson生成geojson
@@ -20,7 +44,7 @@ onMounted(async () => {
   const project = d3.geoMercator().center([123, 24]).scale(5500) // center 指定台灣座標
   const pathGenerator = d3.geoPath().projection(project) // 依投影方法產生路徑生成器
 
-
+  // portrait map
   d3.select('#county').append('g')
   d3.selectAll('g')
     .selectAll('path')
@@ -34,18 +58,37 @@ onMounted(async () => {
     .append('title')
       .text(d => d.properties['COUNTYNAME'])
 
-  // d3.select('#county').append('g')
-  //   .append('text')
-  //   .text('1234').attr('x', 10).attr('y', 20).style('fill', 'white').style('font-size', '24px').style('font-weight', 'bold')
-    // .attr('transform', 'translate(150, 0)')
-    // .append('line')
-    // .attr('x2', 500)
-    // .attr('stroke-width', '2px')
-    // .attr('storke', 'white')
-    // .attr('transform', 'translate(150, 0)')
+  // hover area
+  d3.selectAll('path').on('mouseover', (data, index, node) => {
+    d3.select(`.county_${data.properties.COUNTYCODE}`)
+      .attr('fill', '#7fd6a7')
+
+    hoverID.value = idMap[data.properties.COUNTYCODE]
+    emits('hoverID', hoverID.value)
+  })
+  d3.selectAll('path').on('mouseout', (data, index, node) => {
+    d3.select(`.county_${data.properties.COUNTYCODE}`)
+      .attr('fill', '#7c7c7c')
+    
+    emits('hoverID', '')
+  })
+
+  d3.selectAll('path').on('click', (data, index, node) => {
+    clickID.value = idMap[data.properties.COUNTYCODE]
+    emits('clickID', clickID.value)
+  })
+  
+  // zoom in&out feature
+  d3.select('svg').call(d3.zoom().on('zoom', () => {
+    d3.select('g')
+      .attr('transform', d3.event.transform)
+  }))
 
 })
 
+watch(()=>clickID.value, (val) => {
+  console.log(val)
+})
 
 </script>
 
