@@ -22,12 +22,6 @@ const dataset = {
     [ // 蔡英文、賴清德
       {value: 875854}, {value: 144274}, {value: 786471}, {value: 1097621} 
     ],
-    [ // 有效票數
-      {value: 1632453}, {value: 261102}, {value: 1167248}, {value: 1763826}
-    ],
-    [ // 無效票數
-      {value: 21381}, {value: 3423}, {value: 12341}, {value: 17006}
-    ],
     [ // 投票數
       {value: 1653834}, {value: 264525}, {value: 1179589}, {value: 1780832}
     ]
@@ -42,15 +36,13 @@ const dataset = {
     "宋楚瑜、余湘",
     "韓國瑜、張善政",
     "蔡英文、賴清德",
-    "有效票數",
-    "無效票數",
     "投票數"
   ]
 }
 
 const params = {
   "colors": [
-    '#FF6310','#000095','#1B9431','#8F4586','#5A5AAD',"#709EE2"
+    '#FFAB6F','#63ABE9','#8EC48E','#FF685E'
   ],
   "padding": {
     "top": 50,
@@ -70,21 +62,16 @@ const params = {
         // "barR": 10
       },
       {
-        "stackAmount": 2,
-        "barwidth": 6,
-        "barR": 10
-      },
-      {
         "stackAmount": 1,
         "barwidth": 12,
-        "barR": 10
+        "barR": 2
       }
     ],
     "barPadding": 5,
     "barGroupPadding": 30,
     "labelTextMethod": (e,t)=>String(e.value),
-    "labelPositionMethod": (e,a)=>5===a[0]?"right":"center",
-    "labelStyleMethod": (e,a)=>5===a[0]?"font-weight:800;font-size:18px;fill:#709EE2":"",
+    "labelPositionMethod": (e,a)=>3===a[0]?"right":"top",
+    "labelStyleMethod": (e,a)=>3===a[0]?"font-weight:800;font-size:18px;fill:#FF685E":"",
     "labelFontSizeMethod": (e,t)=>10,
     "labelColorMethod": (e,t)=>'#ffffff',
     "labelPadding": 5

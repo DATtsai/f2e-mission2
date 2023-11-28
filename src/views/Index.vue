@@ -190,32 +190,30 @@
         </div>
       </div>
       <!-- 縱向圖 -->
-      <!-- <div class="RowBarChart chart-block">
+      <div class="RowBarChart chart-block">
         <div class="chart-name">候選人選區得票比率</div>
-        <div class="toolbar">
-          <el-select v-model="value" clearable placeholder="Select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        </div>
         <div>
           <ChartRowBarLayout />
         </div>
         <div class="legend-group">
-          <div class="legend-bar">
-            <div class="color"></div>
-            <span>選舉人數</span>
+            <div class="legend-bar">
+              <div class="color c-orange"></div>
+              <span>宋楚瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-blue"></div>
+              <span>韓國瑜</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-green"></div>
+              <span>蔡英文</span>
+            </div>
+            <div class="legend-bar">
+              <div class="color c-red"></div>
+              <span>總票數</span>
+            </div>
           </div>
-          <div class="legend-line">
-            <div class="color"></div>
-            <span>選舉人數</span>
-          </div>
-        </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
