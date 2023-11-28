@@ -16,6 +16,7 @@ const props = defineProps(['rowData']);
 const dataset = ref({});
 
 if (props.rowData) { 
+  console.log(props.rowData);
   dataset.value = props.rowData;
 }
 

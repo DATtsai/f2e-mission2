@@ -46,43 +46,18 @@ const params = ref({
   }
 })
 
-const dataset = {
+const dataset = ref({
   "y1Data": [],
   "y2Data": [],
   "xLabels": [],
-  "y1ItemLabels": [
-    "宋楚瑜,余湘",
-    "韓國瑜,張善政",
-    "蔡英文,賴清德"
-  ],
+  "y1ItemLabels": [],
   "y2ItemLabels": []
-};
+});
+
 const props = defineProps(['columnData']);
 const xlabel = [];
 
-if (props.columnData && !Array.isArray(props.columnData)) {
-  const label = props.columnData.basic.label;
-  xlabel.push(label);
-  dataset.xLabels.push(xlabel);
-  const ballotValue = props.columnData.filter.map((e) => {
-    let list = [];
-    list.push({ value: e.getBallot });
-    dataset.y1ItemLabels.push(e.label)
-    return list
-  })
-  dataset.y1Data = ballotValue;
-}
-if(Array.isArray(props.columnData) && props.columnData.length > 0){
-  const dataList = props.columnData;
-  dataList.forEach((item) => {
-    item.filter.forEach((filterItem) => {
-      const candidateIndex = filterItem.candidateNo - 1; 
-      if (!dataset.y1Data[candidateIndex]) {
-        dataset.y1Data[candidateIndex] = [];
-      }
-      dataset.y1Data[candidateIndex].push({ value: filterItem.getBallot });
-    });
-    dataset.xLabels.push(item.basic.label);
-  });
-}
+if (props.columnData) { 
+  dataset.value = props.columnData;
+};
 </script>

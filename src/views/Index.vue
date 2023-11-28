@@ -33,9 +33,9 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="candidateValue" multiple collapse-tags placeholder="候選人（可複選）">
+        <el-select v-model="candidateValue" @change="fetchData()" multiple collapse-tags placeholder="候選人（可複選）">
           <el-option
-            v-for="item in candidate"
+            v-for="item in candidateOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -136,55 +136,31 @@
             <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel1Data" :key="`長條${column01}`"/>
           </div>
           <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
+            <div class="legend-bar" v-for="people in candidateOptions" :key="people.value">
+              <div class="color" :class="{ 'c-orange': people.value === 1,'c-blue': people.value === 2, 'c-green': people.value === 3}"></div>
+              <span>{{ people.label }}</span>
             </div>
           </div>
         </div>
-        <div v-if="columnLevel2Data.length>0" style="margin-top:2rem;">
+        <div v-if="columnLevel2Data" style="margin-top:2rem;">
           <div class="chart-container">
             <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel2Data" :key="`長條${column02}`"/>
           </div>
           <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
+            <div class="legend-bar"  v-for="people in candidateOptions" :key="people.value">
+              <div class="color" :class="{ 'c-orange': people.value === 1,'c-blue': people.value === 2, 'c-green': people.value === 3}"></div>
+              <span>{{ people.label }}</span>
             </div>
           </div>
         </div>
-        <div v-if="columnLevel3Data.length>0" style="margin-top:2rem;">
+        <div v-if="columnLevel3Data" style="margin-top:2rem;">
           <div class="chart-container">
             <ChartColumnTwoScalesBarGroupAndLine :column-data="columnLevel3Data" :key="`長條${column03}`"/>
           </div>
           <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
+            <div class="legend-bar" v-for="people in candidateOptions" :key="people.value">
+              <div class="color" :class="{ 'c-orange': people.value === 1,'c-blue': people.value === 2, 'c-green': people.value === 3}"></div>
+              <span>{{ people.label }}</span>
             </div>
           </div>
         </div>
@@ -196,23 +172,15 @@
           <ChartRowBarLayout :row-data="rowData" :key="rowKey"/>
         </div>
         <div class="legend-group">
-            <div class="legend-bar">
-              <div class="color c-orange"></div>
-              <span>宋楚瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-blue"></div>
-              <span>韓國瑜</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-green"></div>
-              <span>蔡英文</span>
-            </div>
-            <div class="legend-bar">
-              <div class="color c-red"></div>
-              <span>總票數</span>
-            </div>
+          <div class="legend-bar" v-for="people in candidateOptions" :key="people.value">
+              <div class="color" :class="{ 'c-orange': people.value === '1','c-blue': people.value === '2', 'c-green': people.value === '3'}"></div>
+              <span>{{ people.label }}</span>
           </div>
+          <div class="legend-bar">
+            <div class="color c-red"></div>
+            <span>總票數</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -229,21 +197,21 @@ import { ref, nextTick, onMounted } from 'vue'
 const isClickToShow = ref(false)
 const cityValue = ref(['0'])
 const distValue = ref([])
-const candidateValue = ref([])
+const candidateValue = ref([1,2,3])
 const city = ref([])
 const dist = ref([])
-const candidate = [
+const candidateOptions = [
   {
-    value: '3',
-    label: '蔡英文'
+    value: 1,
+    label: '宋楚瑜'
   },
   {
-    value: '2',
+    value: 2,
     label: '韓國瑜'
   },
   {
-    value: '1',
-    label: '宋楚瑜'
+    value: 3,
+    label: '蔡英文'
   }
 ];
 const isHasTaiwan = ref(false);
@@ -280,8 +248,8 @@ const bubble01 = ref(0);
 const bubble02 = ref(0);
 const bubble03 = ref(0);
 const columnLevel1Data = ref([]);
-const columnLevel2Data = ref([]);
-const columnLevel3Data = ref([]);
+const columnLevel2Data = ref(null);
+const columnLevel3Data = ref(null);
 const column01 = ref(0);
 const column02 = ref(0);
 const column03 = ref(0);
@@ -303,9 +271,7 @@ const setCity = () => {
   cityValue.value.indexOf('0') > -1 ? isHasTaiwan.value = true : isHasTaiwan.value = false;
   dist.value = list;
   fetchData();
-
 };
-
 
 const fetchData = () => {
   let basicParam = {};
@@ -320,85 +286,134 @@ const fetchData = () => {
   });
   if (distValue.value.length > 0) {
     basicParam.level03 = distValue.value; 
-  }
+  };
+  const candidate = candidateValue.value.map(i => i);
   let req = {
-    basic: { ...basicParam }, filter: { }
+    basic: { ...basicParam }, filter: { candidate }
   };
   (async () => {
     let result = await searchBallot(req);
-    console.log(result);
     const { level01, level02, level03 } = result;
+    const colParam = {
+      y1Data: [],
+      y2Data: [],
+      xLabels: [],
+      y1ItemLabels: [],
+      y2ItemLabels: [],
+      id: []
+    };
     let rowParam = {
       yLabels: [],
       data: [],
-      itemLabels: [
-      "宋楚瑜,余湘",
-      "韓國瑜,張善政",
-      "蔡英文,賴清德",
-      "投票數"
-      ]
-    }
+      itemLabels: [],
+      // "宋楚瑜,余湘",
+    //   "韓國瑜,張善政",
+    //   "蔡英文,賴清德",
+    //   "投票數"
+    };
     if (level01) {
       bubbleLevel1Data.value = level01[0].basic;
       bubble01.value += 1;
-      columnLevel1Data.value = level01[0];
-      level01.forEach((item) => { 
-        rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach(i => { 
-          const candidateIndex = i.candidateNo - 1; 
-          if (!rowParam.data[candidateIndex]) {
-            rowParam.data[candidateIndex] = [];
-          };
-          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
+      const colParam1 = JSON.parse(JSON.stringify(colParam));
+      level01.forEach((item) => {
+        // column Data
+        colParam1.xLabels.push(item.basic.label);
+        item.filter.forEach((i, index) => {
+          if (!colParam1.y1Data[index]) {
+            colParam1.y1Data[index] = [];
+          }
+          colParam1.y1Data[index].push({ value: i.getBallot });
+          colParam1.y1ItemLabels.push(i.label);
+          colParam1.id.push(i.candidateNo)
         })
-        if (!rowParam.data[3]) { 
-          rowParam.data[3] = []
-          rowParam.data[3].push({ value: Number(item.basic.voteCount) });
-        };
-      })
+        columnLevel1Data.value = colParam1;
+        // row Data
+        rowParam.yLabels.push(item.basic.label);
+        item.filter.forEach((i, index) => { 
+          if (!rowParam.data[index]) {
+            rowParam.data[index] = [];
+          };
+          rowParam.itemLabels.push(i.label);
+          rowParam.data[index].push({ value: Number(i.getBallot) });
+        })
+        rowParam.itemLabels.push("投票數");
+        const end = rowParam.data.length;
+        if (!rowParam.data[end]) { 
+          rowParam.data[end] = []
+        }
+        rowParam.data[end].push({ value: Number(item.basic.voteCount) });
+      });
+
       if (isHasTaiwan.value) {
         column01.value += 1;
       };
     }
     if (level02) {
       bubbleLevel2Data.value = level02.map(i => i.basic);
-      columnLevel2Data.value = level02;
       bubble02.value += 1;
-      column02.value += 1;
+      const colParam2 = JSON.parse(JSON.stringify(colParam));
       level02.forEach((item) => { 
+        // column Data
+        colParam2.xLabels.push(item.basic.label);
+        item.filter.forEach((i, index) => {
+          if (!colParam2.y1Data[index]) {
+            colParam2.y1Data[index] = [];
+          }
+          colParam2.y1Data[index].push({ value: i.getBallot });
+          colParam2.y1ItemLabels.push(i.label);
+          colParam2.id.push(i.candidateNo)
+        });
+        columnLevel2Data.value = colParam2;
+        // row Data
         rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach(i => { 
-          const candidateIndex = i.candidateNo - 1; 
-          if (!rowParam.data[candidateIndex]) {
-            rowParam.data[candidateIndex] = [];
+        item.filter.forEach((i,index) => { 
+          if (!rowParam.data[index]) {
+            rowParam.data[index] = [];
           };
-          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
+          rowParam.itemLabels.push(i.label);
+          rowParam.data[index].push({ value: Number(i.getBallot) });
         })
-        if (!rowParam.data[3]) { 
-          rowParam.data[3] = []
-        }
-        rowParam.data[3].push({ value: Number(item.basic.voteCount) });
+        rowParam.itemLabels.push("投票數");
+        // const end = rowParam.data.length;
+        // if (!rowParam.data[end]) { 
+        //   rowParam.data[end] = []
+        // }
+        // rowParam.data[end].push({ value: Number(item.basic.voteCount) });
       })
+      column02.value += 1;
     }
     if (level03) {
       bubbleLevel3Data.value = level03.map(i => i.basic);
-      columnLevel3Data.value = level03;
       bubble03.value += 1;
-      column03.value += 1;
+      const colParam3 = JSON.parse(JSON.stringify(colParam));
       level03.forEach((item) => { 
+        colParam3.xLabels.push(item.basic.label);
+        item.filter.forEach((i, index) => {
+          if (!colParam3.y1Data[index]) {
+            colParam3.y1Data[index] = [];
+          }
+          colParam3.y1Data[index].push({ value: i.getBallot });
+          colParam3.y1ItemLabels.push(i.label);
+          colParam3.id.push(i.candidateNo)
+        });
+        columnLevel3Data.value = colParam3;
+        // row Data
         rowParam.yLabels.push(item.basic.label);
-        item.filter.forEach(i => { 
-          const candidateIndex = i.candidateNo - 1; 
-          if (!rowParam.data[candidateIndex]) {
-            rowParam.data[candidateIndex] = [];
+        item.filter.forEach((i,index) => { 
+          if (!rowParam.data[index]) {
+            rowParam.data[index] = [];
           };
-          rowParam.data[candidateIndex].push({ value: Number(i.getBallot) });
+          rowParam.itemLabels.push(i.label);
+          rowParam.data[index].push({ value: Number(i.getBallot) });
         })
-        if (!rowParam.data[3]) { 
-          rowParam.data[3] = []
-        }
-        rowParam.data[3].push({ value: Number(item.basic.voteCount) });
+        rowParam.itemLabels.push("投票數");
+        // const end = rowParam.data.length;
+        // if (!rowParam.data[end]) { 
+        //   rowParam.data[end] = []
+        // }
+        // rowParam.data[end].push({ value: Number(item.basic.voteCount) });
       })
+      column03.value += 1;
     }
     rowKey.value += 1;
     rowData.value = rowParam;
