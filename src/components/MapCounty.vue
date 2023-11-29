@@ -64,6 +64,7 @@ onMounted(async () => {
   d3.selectAll('path').on('mouseover', (data, index, node) => {
     d3.select(`.county_${data.properties.COUNTYCODE}`)
       .attr('fill', '#7fd6a7')
+      .attr('cursor', 'pointer')
 
     hoverID.value = idMap[data.properties.COUNTYCODE]
     emits('hoverID', hoverID.value)
