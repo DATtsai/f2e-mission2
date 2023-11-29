@@ -43,11 +43,7 @@ const searchBallot = async (req) => {
             if(result.level01) {
                 filter.candidate = filter.candidate.map(item => String(item))
                 result.level01 = result.level01.map(item => {
-                    console.log('if', item.filter)
-                    item.filter = item.filter.filter((element, ind) => {
-                        console.log(ind)
-                        return filter.candidate.includes(String(element.candidateNo))
-                    })
+                    item.filter = item.filter.filter((element, ind) => filter.candidate.includes(String(element.candidateNo)))
                     return item
                 })
             }

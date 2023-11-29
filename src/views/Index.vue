@@ -26,7 +26,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="distValue" @change="fetchData(getReq(['level03']))" multiple collapse-tags placeholder="鄉鎮市區（可複選）" >
+        <el-select v-model="distValue" @change="fetchData(getReq(['level03', 'candidate']))" multiple collapse-tags placeholder="鄉鎮市區（可複選）" >
           <el-option
             v-for="item in dist"
             :key="item.value"
@@ -34,18 +34,17 @@
             :value="item.value"
           />
         </el-select>
-        <!-- <el-select v-model="candidateValue" @change="fetchData(getReq(['level01', 'level02', 'level03', 'candidate']))" multiple collapse-tags placeholder="候選人（可複選）">
+        <el-select v-model="candidateValue" @change="fetchData(getReq(['level01', 'level02', 'level03', 'candidate']))" multiple collapse-tags placeholder="候選人（可複選）">
           <el-option
             v-for="item in candidate"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
-        </el-select> -->
+        </el-select>
       </div>
       <!-- 泡泡圖 -->
       <div class="bubbleChart chart-block">
-        <!-- todo: 確認 level01 資料 -->
         <div class="chart-name">基本投票統計</div>
         <div v-if="level01Data.length">
           <div class="chart-container">
@@ -202,7 +201,7 @@ const getReq = (config) => { // config: []
         if(distValue.value.length) basic[item] = distValue.value
         break
       case 'candidate':
-        if(candidateValue.value.length) filter[item] = candidateValue.value
+        if(candidateValue.value.length) filter[item] = candidateValue.value.sort()
         break
     }
   }
@@ -224,7 +223,7 @@ const setCity = () => {
   cityValue.value.indexOf('0') > -1 ? isHasTaiwan.value = true : isHasTaiwan.value = false;
   dist.value = list;
 
-  fetchData(getReq(['level01', 'level02']));
+  fetchData(getReq(['level01', 'level02', 'candidate']));
 };
 
 const fetchData = (req = {basic: {}}) => {
