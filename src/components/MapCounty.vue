@@ -81,10 +81,10 @@ onMounted(async () => {
   })
   
   // zoom in&out feature
-  d3.select('svg').call(d3.zoom().on('zoom', () => {
-    d3.select('g.map')
-      .attr('transform', d3.event.transform)
-  }))
+  // d3.select('svg').call(d3.zoom().on('zoom', () => {
+  //   d3.select('g.map')
+  //     .attr('transform', d3.event.transform)
+  // }))
 
 })
 
