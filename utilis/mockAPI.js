@@ -37,31 +37,25 @@ const searchBallot = async (req) => {
     if(filter) {
         if(filter.candidate && filter.candidate.length > 0) {
             if(result.level01) {
-                for(let i=0; i<filter.candidate.length; i++) {
-                    // filter.candidate = filter.candidate.map(item => String(item))
-                    result.level01 = result.level01.map(item => {
-                        item.filter = item.filter.filter(element => filter.candidate.includes(element.candidateNo))
-                        return item
-                    })
-                }
+                filter.candidate = filter.candidate.map(item => String(item))
+                result.level01 = result.level01.map(item => {
+                    item.filter = item.filter.filter(element => filter.candidate.includes(String(element.candidateNo)))
+                    return item
+                })
             }
             if(result.level02) {
-                for(let i=0; i<filter.candidate.length; i++) {
-                    // filter.candidate = filter.candidate.map(item => String(item))
-                    result.level02 = result.level02.map(item => {
-                        item.filter = item.filter.filter(element => filter.candidate.includes(element.candidateNo))
-                        return item
-                    })
-                }
+                filter.candidate = filter.candidate.map(item => String(item))
+                result.level02 = result.level02.map(item => {
+                    item.filter = item.filter.filter(element => filter.candidate.includes(String(element.candidateNo)))
+                    return item
+                })
             }
             if(result.level03) {
-                for(let i=0; i<filter.candidate.length; i++) {
-                    // filter.candidate = filter.candidate.map(item => String(item))
-                    result.level03 = result.level03.map(item => {
-                        item.filter = item.filter.filter(element => filter.candidate.includes(element.candidateNo))
-                        return item
-                    })
-                }
+                filter.candidate = filter.candidate.map(item => String(item))
+                result.level03 = result.level03.map(item => {
+                    item.filter = item.filter.filter(element => filter.candidate.includes(String(element.candidateNo)))
+                    return item
+                })
             }
         }
     }
