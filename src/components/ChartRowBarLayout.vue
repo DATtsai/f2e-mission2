@@ -92,11 +92,21 @@ const params = ref({
     labelFontSizeMethod: (e,t)=>10,
     labelColorMethod: (e,t)=>'#ffffff',
     labelPadding: 5,
-    tooltipAside: {
-      templateHtml: (d) => {
-        return `
-          ${d}
-        `
+  },
+  tooltipAside: {
+    templateHtml: (d) => {
+      if(d.itemData.length) {
+        let str = d.yLabel + ' '
+        let voteCount = d.groupData[d.groupData.length - 1].value
+        let strList = d.groupData.map(item => `${item.itemLabel + ' : ' + item.value + ' (' + ((item.value / voteCount) * 100).toFixed(2) + '%)' }`)
+        str += strList[d.groupData.length - 1] + '<br><hr>'
+        if(d.itemData[0].itemIndex + 1 === d.groupData.length) {
+          str += strList.filter((item, index) => index !== d.groupData.length - 1).join('<br>')
+        }
+        else {
+          str += strList.filter((item, index) => index == d.itemData[0].itemIndex).join('<br>')
+        }
+        return str
       }
     }
   }
