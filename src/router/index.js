@@ -9,9 +9,9 @@ const router = createRouter({
       component: () => import('../views/Index.vue')
     },
     {
-      path: '/index_old',
+      path: '/pocDemo',
       name: 'demo',
-      component: () => import('../views/Index(old).vue')
+      component: () => import('../views/pocDemo.vue')
     }
   ]
 })
