@@ -5,6 +5,20 @@
       :dataset="dataset"
       :params="params"
     />
+    <div class="legend-group" style="margin-bottom: 24px">
+      <div class="legend-bar">
+        <div class="color c-orange"></div>
+        <span>宋楚瑜、余湘</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color c-blue"></div>
+        <span>韓國瑜、張善政</span>
+      </div>
+      <div class="legend-bar">
+        <div class="color c-green"></div>
+        <span>蔡英文、賴清德</span>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -17,18 +31,18 @@ const params = ref({
   axisColumnTwoScales: {
     xLabel: '縣市',
     y1Label: '得票數',
-    y2Visible: false
+    y2Visible: false,
   },
   padding: {
     top: 50,
     right: 70,
-    bottom: 50,
+    bottom: 70,
     left: 100
   },
   graphicColumnBarGroup: {
     barType: 'rect',
-    barPadding: 1,
-    barGroupPadding: 30,
+    barPadding: 0,
+    barGroupPadding: 16,
     barWidth: 16
   },
   tooltipAside: {
@@ -36,9 +50,9 @@ const params = ref({
       return `
         得票數<br>${d.dataset.y1Data.map((i, index) => {
           let name;
-          index === 0 ? name = '宋楚瑜 : ': false;
-          index === 1 ? name = '韓國瑜 : ': false;
-          index === 2 ? name = '蔡英文 : ': false;
+          index === 0 ? name = '宋楚瑜、余湘 : ': false;
+          index === 1 ? name = '韓國瑜、張善政 : ': false;
+          index === 2 ? name = '蔡英文、賴清德 : ': false;
           return `${ name + i[0].value } 票`
         }).join("<br>")}
       `
@@ -50,14 +64,56 @@ const dataset = ref({
   "y1Data": [],
   "y2Data": [],
   "xLabels": [],
+<<<<<<< HEAD
   "y1ItemLabels": [],
+=======
+  "y1ItemLabels": [
+    "宋楚瑜、余湘",
+    "韓國瑜、張善政",
+    "蔡英文、賴清德"
+  ],
+>>>>>>> 5837adc45a1239444846faf9e99cbfab18fe1f27
   "y2ItemLabels": []
 });
 
 const props = defineProps(['columnData']);
 const xlabel = [];
 
+<<<<<<< HEAD
 if (props.columnData) { 
   dataset.value = props.columnData;
 };
 </script>
+=======
+const dataList = props.columnData;
+dataList.forEach((item) => {
+  item.filter.forEach((filterItem) => {
+    const candidateIndex = filterItem.candidateNo - 1; 
+    if (!dataset.y1Data[candidateIndex]) {
+      dataset.y1Data[candidateIndex] = [];
+    }
+    dataset.y1Data[candidateIndex].push({ value: filterItem.getBallot });
+  });
+  dataset.xLabels.push(item.basic.label);
+});
+console.log('dataset', dataset)
+
+</script>
+
+<style scoped>
+/* BP-Chart X軸文字RWD改垂直 */
+::v-deep .xAxis .tick text {
+  @media screen and (width <=768px) {
+    transform-origin: -12px -12px !important;
+    -webkit-writing-mode: vertical-lr !important;
+    writing-mode: vertical-lr !important;
+  }
+}
+
+/* ::v-deep .bpchart__bar rect {
+  @media screen and (width <=768px) {
+  width: 4px !important;
+  }
+} */
+</style>
+>>>>>>> 5837adc45a1239444846faf9e99cbfab18fe1f27
