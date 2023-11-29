@@ -5,7 +5,7 @@
       :dataset="dataset"
       :params="params"
     />
-    <div class="legend-group">
+    <div class="legend-group" style="margin-bottom: 24px">
       <div class="legend-bar">
         <div class="color c-orange"></div>
         <span>宋楚瑜、余湘</span>
@@ -26,41 +26,14 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import D3ModuleContainer from '@bpchart/vue/components/D3ModuleContainer.vue'
 import { ChartRowBarLayout } from '@bpchart/d3-modules/chartRow'
 
-const props = defineProps(['rowData']);
-const dataset = ref({
-  data: [],
-  yLabels: [],
-  itemLabels: [
-    '宋楚瑜、余湘',
-    '韓國瑜、張善政',
-    '蔡英文、賴清德',
-    '投票數'
-  ],
-})
-
-props.rowData.forEach((item) => { 
-  dataset.value.yLabels.push(item.basic.label);
-  item.filter.forEach(i => { 
-    const candidateIndex = i.candidateNo - 1; 
-    if (!dataset.value.data[candidateIndex]) {
-      dataset.value.data[candidateIndex] = [];
-    };
-    dataset.value.data[candidateIndex].push({ value: Number(i.getBallot) });
-  })
-  if (!dataset.value.data[3]) { 
-    dataset.value.data[3] = []
-  }
-  dataset.value.data[3].push({ value: Number(item.basic.voteCount) });
-})
-
+const candidateColor = {1: '#FFAB6F', 2: '#63ABE9', 3: '#8EC48E', voteCount: '#FF685E' }
+const candidateLabel = {1: '宋楚瑜、余湘', 2: '韓國瑜、張善政', 3: '蔡英文、賴清德', voteCount: '投票數'}
 const params = ref({
-  colors: [
-    '#FFAB6F','#63ABE9','#8EC48E','#FF685E'
-  ],
+  colors: [],
   padding: {
     "top": 50,
     "right": 70,
@@ -87,8 +60,8 @@ const params = ref({
     barPadding: 10,
     barGroupPadding: 30,
     labelTextMethod: (e,t)=>String(e.value),
-    labelPositionMethod: (e,a)=>3===a[0]?"right":"top",
-    labelStyleMethod: (e,a)=>3===a[0]?"font-weight:800;font-size:18px;fill:#FF685E":"",
+    labelPositionMethod: (e,a)=> a[0] === (dataset.value.itemLabels.length - 1) ? "right" : "top",
+    labelStyleMethod: (e,a)=>a[0] === (dataset.value.itemLabels.length - 1) ? "font-weight:800;font-size:18px;fill:#FF685E" : "",
     labelFontSizeMethod: (e,t)=>10,
     labelColorMethod: (e,t)=>'#ffffff',
     labelPadding: 5,
@@ -111,4 +84,29 @@ const params = ref({
     }
   }
 })
+const dataset = ref({
+  data: [],
+  yLabels: [],
+  itemLabels: [],
+})
+const props = defineProps(['rowData']);
+const dataList = computed(() => props.rowData)
+dataList.value.forEach(item => { 
+  dataset.value.yLabels.push(item.basic.label);
+  params.value.graphicRowBarLayout.groupLayout[0].stackAmount = item.filter.length
+  if(!params.value.colors.length) params.value.colors = item.filter.map(element => candidateColor[element.candidateNo])
+  if(!dataset.value.itemLabels.length) dataset.value.itemLabels = item.filter.map(element => candidateLabel[element.candidateNo])
+  item.filter.forEach((element, index) => {
+    if(!dataset.value.data[index]) dataset.value.data[index] = []
+    dataset.value.data[index].push({ value: Number(element.getBallot) })
+  })
+  if(item.filter.length) {
+    let lastIndex = item.filter.length
+    if(!params.value.colors.length[lastIndex]) params.value.colors[lastIndex] = candidateColor['voteCount']
+    if(!dataset.value.itemLabels[lastIndex]) dataset.value.itemLabels[lastIndex] = candidateLabel['voteCount']
+    if(!dataset.value.data[lastIndex]) dataset.value.data[lastIndex] = []
+    dataset.value.data[lastIndex].push({ value: Number(item.basic.voteCount)})
+  }
+})
+
 </script>
