@@ -91,7 +91,6 @@ a{
   height: 100vh;
   display: flex;
   flex-direction: column;
-  position:relative;
   align-items: center;
   padding: 1rem;
   & .filter {
@@ -102,12 +101,13 @@ a{
     justify-content: center;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin: 1.25rem auto;
+    margin: 0 auto;
     background-color: var(--color-background);
     &.sticky {
-      position: sticky;
+      position: fixed;
       top: 0;
       z-index: 10;
+      box-shadow: 0px 1px 5px 1px rgba(255, 255, 255, 0.1);
     }
     @media screen and (width <=768px) {
       flex-direction: column;
