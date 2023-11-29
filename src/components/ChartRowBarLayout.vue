@@ -80,13 +80,9 @@ const params = ref({
       },
       {
         stackAmount: 1,
-        barwidth: 5,
-        barR: 10
+        barWidth: 10,
+        barR: 5
       },
-      {
-        stackAmount: 0,
-        barWidth: 20,
-      }
     ],
     barPadding: 10,
     barGroupPadding: 30,
