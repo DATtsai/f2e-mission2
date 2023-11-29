@@ -63,9 +63,7 @@ const dataset = ref({
   "y1ItemLabels": [],
   "y2ItemLabels": []
 });
-const props = defineProps(['columnData']);
-const xlabel = [];
-
+const props = defineProps(['columnData'])
 const dataList = computed(() => props.columnData)
 dataList.value.forEach(item => {
   dataset.value.xLabels.push(item.basic.label);
