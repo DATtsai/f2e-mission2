@@ -34,33 +34,34 @@ const props = defineProps(['rowData']);
 const dataset = ref({
   data: [],
   yLabels: [],
-  itemLabels: [
-    '宋楚瑜、余湘',
-    '韓國瑜、張善政',
-    '蔡英文、賴清德',
-    '投票數'
-  ],
+  itemLabels: [],
 })
 
 props.rowData.forEach((item) => { 
   dataset.value.yLabels.push(item.basic.label);
-  item.filter.forEach(i => { 
-    const candidateIndex = i.candidateNo - 1; 
-    if (!dataset.value.data[candidateIndex]) {
-      dataset.value.data[candidateIndex] = [];
+  item.filter.forEach((i,index) => { 
+    if (!dataset.value.data[index]) {
+      dataset.value.data[index] = [];
     };
-    dataset.value.data[candidateIndex].push({ value: Number(i.getBallot) });
+    dataset.value.data[index].push({ value: Number(i.getBallot) });
+    if (dataset.value.itemLabels.indexOf(i.label) === -1) {
+      dataset.value.itemLabels.push(i.label)
+    }
   })
-  if (!dataset.value.data[3]) { 
-    dataset.value.data[3] = []
+  if(item.filter.length) {
+    const end = item.filter.length;
+    if (!dataset.value.data[end]) { 
+      dataset.value.data[end] = []
+    }
+    dataset.value.data[end].push({ value: Number(item.basic.voteCount) });
   }
-  dataset.value.data[3].push({ value: Number(item.basic.voteCount) });
+  dataset.value.itemLabels.push("投票數")
 })
 
+// todo : params 改扁顏色和 stackAmount
+
 const params = ref({
-  colors: [
-    '#FFAB6F','#63ABE9','#8EC48E','#FF685E'
-  ],
+  colors: ['#FFAB6F','#63ABE9','#8EC48E','#FF685E'],
   padding: {
     "top": 50,
     "right": 70,

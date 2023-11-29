@@ -5,7 +5,7 @@
       :dataset="dataset"
       :params="params"
     />
-    <div class="legend-group" style="margin-bottom: 24px">
+    <div class="legend-group" style="margin-bottom: 24px" >
       <div class="legend-bar">
         <div class="color c-orange"></div>
         <span>宋楚瑜、余湘</span>
@@ -64,11 +64,7 @@ const dataset = ref({
   "y1Data": [],
   "y2Data": [],
   "xLabels": [],
-  "y1ItemLabels": [
-    "宋楚瑜、余湘",
-    "韓國瑜、張善政",
-    "蔡英文、賴清德"
-  ],
+  "y1ItemLabels": [],
   "y2ItemLabels": []
 });
 
@@ -77,16 +73,15 @@ const xlabel = [];
 
 const dataList = props.columnData;
 dataList.forEach((item) => {
-  item.filter.forEach((filterItem) => {
-    const candidateIndex = filterItem.candidateNo - 1; 
-    if (!dataset.value.y1Data[candidateIndex]) {
-      dataset.value.y1Data[candidateIndex] = [];
-    }
-    dataset.value.y1Data[candidateIndex].push({ value: filterItem.getBallot });
-  });
   dataset.value.xLabels.push(item.basic.label);
+  item.filter.forEach((filterItem, index) => {
+    if (!dataset.value.y1Data[index]) {
+      dataset.value.y1Data[index] = [];
+    }
+    dataset.value.y1Data[index].push({ value: filterItem.getBallot });
+    dataset.value.y1ItemLabels.push(filterItem.label);
+  });
 });
-console.log('dataset', dataset)
 
 </script>
 

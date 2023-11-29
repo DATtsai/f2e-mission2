@@ -143,15 +143,15 @@ const city = ref([])
 const dist = ref([])
 const candidateOptions = [
   {
-    value: '3',
+    value: 3,
     label: '蔡英文、賴清德'
   },
   {
-    value: '2',
+    value: 2,
     label: '韓國瑜、張善政'
   },
   {
-    value: '1',
+    value: 1,
     label: '宋楚瑜、余湘'
   }
 ];
@@ -202,7 +202,11 @@ const getReq = (config) => { // config: []
         if(distValue.value.length) basic[item] = distValue.value
         break
       case 'candidate':
-        if(candidateValue.value.length) filter[item] = candidateValue.value
+        if(candidateValue.value.length) {
+          // filter[item] = candidateValue.value
+          // console.log(candidateValue.value);
+          candidateValue.value.length===3? {} : filter[item] = candidateValue.value
+        }
         break
     }
   }
@@ -228,9 +232,11 @@ const setCity = () => {
 };
 
 const fetchData = (req = {basic: {}}) => {
+  console.log('req',req);
   (async () => {
     let result = await searchBallot(req);
     const { level01, level02, level03 } = result;
+    console.log('result',result);
     if (level01) {
       level01Data.value = level01
       refreshKey.value.level01 += 1
