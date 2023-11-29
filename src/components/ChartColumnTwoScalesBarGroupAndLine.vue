@@ -64,37 +64,27 @@ const dataset = ref({
   "y1Data": [],
   "y2Data": [],
   "xLabels": [],
-<<<<<<< HEAD
-  "y1ItemLabels": [],
-=======
   "y1ItemLabels": [
     "宋楚瑜、余湘",
     "韓國瑜、張善政",
     "蔡英文、賴清德"
   ],
->>>>>>> 5837adc45a1239444846faf9e99cbfab18fe1f27
   "y2ItemLabels": []
 });
 
 const props = defineProps(['columnData']);
 const xlabel = [];
 
-<<<<<<< HEAD
-if (props.columnData) { 
-  dataset.value = props.columnData;
-};
-</script>
-=======
 const dataList = props.columnData;
 dataList.forEach((item) => {
   item.filter.forEach((filterItem) => {
     const candidateIndex = filterItem.candidateNo - 1; 
-    if (!dataset.y1Data[candidateIndex]) {
-      dataset.y1Data[candidateIndex] = [];
+    if (!dataset.value.y1Data[candidateIndex]) {
+      dataset.value.y1Data[candidateIndex] = [];
     }
-    dataset.y1Data[candidateIndex].push({ value: filterItem.getBallot });
+    dataset.value.y1Data[candidateIndex].push({ value: filterItem.getBallot });
   });
-  dataset.xLabels.push(item.basic.label);
+  dataset.value.xLabels.push(item.basic.label);
 });
 console.log('dataset', dataset)
 
@@ -116,4 +106,3 @@ console.log('dataset', dataset)
   }
 } */
 </style>
->>>>>>> 5837adc45a1239444846faf9e99cbfab18fe1f27

@@ -42,12 +42,6 @@ const dataset = ref({
   ],
 })
 
-<<<<<<< HEAD
-if (props.rowData) { 
-  // console.log(props.rowData);
-  dataset.value = props.rowData;
-}
-=======
 props.rowData.forEach((item) => { 
   dataset.value.yLabels.push(item.basic.label);
   item.filter.forEach(i => { 
@@ -62,7 +56,6 @@ props.rowData.forEach((item) => {
   }
   dataset.value.data[3].push({ value: Number(item.basic.voteCount) });
 })
->>>>>>> 5837adc45a1239444846faf9e99cbfab18fe1f27
 
 const params = ref({
   colors: [
