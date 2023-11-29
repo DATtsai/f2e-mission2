@@ -5,10 +5,14 @@
 透過2020選舉資料，來探索不同行政區階層的投票紀錄與投票結果，利用d3js完成地圖、圖表開發。
 
 ## 系統說明
-專案下載後，使用 `npm install` 完成套件安裝，本機端開發環境 `npm run dev`
-由於自製圖表部份有另外封裝成私有套件發佈，如安裝異常請洽開發者 dat1293@gmail.com
-執行環境 node v18(lts/hydrogen)以上
+專案下載後，另外至gh-pages分支下載檔案(https://github.com/DATtsai/f2e-mission2/tree/gh-pages)，並將此命名為dist置於f2e-mission2資料夾之下<br>
+執行環境 node v18(lts/hydrogen)以上<br>
+使用 `npm run preview` 完成本地端對伺服器開設(運作dist的程式碼)<br>
+<hr>
+本機端開發環境，使用 `npm install` 完成套件安裝，本機端開發環境伺服器開社 `npm run dev`<br>
+由於自製圖表部份有另外封裝成私有套件發佈(bpnpm)，本機端開發需取得私有npm授權路徑，目前不對外提供<br>
 
+如執行專案有異常或詢問授權相關問題，請洽開發者 dat1293@gmail.com<br>
 ## 資料夾說明
 - public
 - src
