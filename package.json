@@ -21,6 +21,7 @@
     "pinia": "^2.1.7",
     "topojson-simplify": "^3.0.3",
     "vue": "^3.3.4",
+    "vue-meta": "^3.0.0-alpha.7",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
