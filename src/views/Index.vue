@@ -34,14 +34,14 @@
             :value="item.value"
           />
         </el-select>
-        <el-select v-model="candidateValue" @change="fetchData(getReq(['level01', 'level02', 'level03', 'candidate']))" multiple collapse-tags placeholder="候選人（可複選）">
+        <!-- <el-select v-model="candidateValue" @change="fetchData(getReq(['level01', 'level02', 'level03', 'candidate']))" multiple collapse-tags placeholder="候選人（可複選）">
           <el-option
             v-for="item in candidate"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
-        </el-select>
+        </el-select> -->
       </div>
       <!-- 泡泡圖 -->
       <div class="bubbleChart chart-block">
